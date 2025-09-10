@@ -1,9 +1,9 @@
 import { useState } from "react";
 import { 
-  Dumbbell, 
+  Calendar, 
   Utensils, 
-  Users, 
-  Route, 
+  UserPlus, 
+  Calculator, 
   Trophy, 
   User,
   Play,
@@ -95,20 +95,20 @@ const BentoGrid = () => {
 
   const cards = [
     {
-      id: "workouts",
-      title: "Outdoor Run",
-      description: "Track your runs with GPS and real-time metrics",
-      icon: Dumbbell,
+      id: "workout-plan",
+      title: "Workout Plan",
+      description: "Create and follow personalized workout routines",
+      icon: Calendar,
       gradient: "bg-gradient-to-br from-primary to-primary-glow",
-      stats: "3.2k runs this week"
+      stats: "15 plans created"
     },
     {
-      id: "cycling",
-      title: "Cycling",
-      description: "Explore bike routes and track your rides",
-      icon: Route,
+      id: "energy-calc",
+      title: "Energy Calculator",
+      description: "Calculate calories and get nutrition recommendations",
+      icon: Calculator,
       gradient: "bg-gradient-to-br from-secondary to-secondary-glow",
-      stats: "12 routes explored"
+      stats: "Daily: 2,150 cal"
     },
     {
       id: "meals",
@@ -119,12 +119,12 @@ const BentoGrid = () => {
       stats: "28 recipes saved"
     },
     {
-      id: "community",
-      title: "Community",
-      description: "Connect with local fitness enthusiasts",
-      icon: Users,
+      id: "find-friends",
+      title: "Find Friends & Coaches",
+      description: "Connect with nearby friends and fitness coaches",
+      icon: UserPlus,
       gradient: "bg-gradient-to-br from-warning to-orange-400",
-      stats: "156 members nearby"
+      stats: "23 friends nearby"
     },
     {
       id: "challenges",

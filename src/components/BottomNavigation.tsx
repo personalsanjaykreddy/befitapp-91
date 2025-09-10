@@ -1,10 +1,9 @@
 import { useState } from "react";
 import { 
-  Map, 
+  Home, 
   Dumbbell, 
   Utensils, 
-  Users,
-  MapIcon
+  StickyNote
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -52,13 +51,13 @@ const NavItem = ({ id, label, icon: Icon, isActive, onSelect }: NavItemProps) =>
 };
 
 const BottomNavigation = () => {
-  const [activeTab, setActiveTab] = useState("map");
+  const [activeTab, setActiveTab] = useState("home");
 
   const navItems = [
     {
-      id: "map",
-      label: "Map",
-      icon: MapIcon
+      id: "home",
+      label: "Home",
+      icon: Home
     },
     {
       id: "workouts",
@@ -71,9 +70,9 @@ const BottomNavigation = () => {
       icon: Utensils
     },
     {
-      id: "community",
-      label: "Community",
-      icon: Users
+      id: "notes",
+      label: "Notes",
+      icon: StickyNote
     }
   ];
 
@@ -97,10 +96,10 @@ const BottomNavigation = () => {
       {/* Active Tab Indicator */}
       <div className={cn(
         "absolute bottom-0 left-0 h-0.5 bg-gradient-primary transition-all duration-slow rounded-full",
-        activeTab === "map" && "w-1/4 transform translate-x-0",
+        activeTab === "home" && "w-1/4 transform translate-x-0",
         activeTab === "workouts" && "w-1/4 transform translate-x-full",
         activeTab === "meals" && "w-1/4 transform translate-x-[200%]",
-        activeTab === "community" && "w-1/4 transform translate-x-[300%]"
+        activeTab === "notes" && "w-1/4 transform translate-x-[300%]"
       )} />
     </nav>
   );
