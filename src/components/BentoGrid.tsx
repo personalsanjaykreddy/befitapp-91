@@ -21,6 +21,7 @@ interface BentoCardProps {
   stats?: string;
   isSelected?: boolean;
   onSelect?: (id: string) => void;
+  onNavigate?: (id: string) => void;
 }
 
 const BentoCard = ({ 
@@ -31,11 +32,17 @@ const BentoCard = ({
   gradient, 
   stats, 
   isSelected, 
-  onSelect 
+  onSelect,
+  onNavigate 
 }: BentoCardProps) => {
   return (
     <div
-      onClick={() => onSelect?.(id)}
+      onClick={() => {
+        onSelect?.(id);
+        if (id === "workout-plan") {
+          onNavigate?.(id);
+        }
+      }}
       className={cn(
         "relative group cursor-pointer rounded-lg p-4 transition-all duration-slow",
         "bg-gradient-card border border-border/50 shadow-sm hover:shadow-md",
@@ -90,7 +97,11 @@ const BentoCard = ({
   );
 };
 
-const BentoGrid = () => {
+interface BentoGridProps {
+  onNavigateToWorkoutPlan?: () => void;
+}
+
+const BentoGrid = ({ onNavigateToWorkoutPlan }: BentoGridProps = {}) => {
   const [selectedCard, setSelectedCard] = useState<string | null>(null);
 
   const cards = [
@@ -160,6 +171,7 @@ const BentoGrid = () => {
             {...card}
             isSelected={selectedCard === card.id}
             onSelect={setSelectedCard}
+            onNavigate={() => onNavigateToWorkoutPlan?.()}
           />
         ))}
       </div>

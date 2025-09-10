@@ -1,7 +1,7 @@
 import { Search } from "lucide-react";
 import { getTimeBasedGreeting, getMotivationalMessage } from "@/utils/time";
 import { Input } from "@/components/ui/input";
-import AppIcon from "@/assets/fitness-app-icon.png";
+import AppIcon from "/lovable-uploads/0739df50-386f-415c-8067-a0ba00776be0.png";
 
 const AppHeader = () => {
   const greeting = getTimeBasedGreeting();

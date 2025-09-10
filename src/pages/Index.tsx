@@ -1,9 +1,25 @@
+import { useState } from "react";
 import AppHeader from "@/components/AppHeader";
 import HomeView from "@/components/HomeView";
 import BentoGrid from "@/components/BentoGrid";
 import BottomNavigation from "@/components/BottomNavigation";
+import WorkoutPlan from "@/components/WorkoutPlan";
 
 const Index = () => {
+  const [currentView, setCurrentView] = useState<"home" | "workout-plan">("home");
+
+  const handleNavigateToWorkoutPlan = () => {
+    setCurrentView("workout-plan");
+  };
+
+  const handleBackToHome = () => {
+    setCurrentView("home");
+  };
+
+  if (currentView === "workout-plan") {
+    return <WorkoutPlan onBack={handleBackToHome} />;
+  }
+
   return (
     <div className="flex flex-col h-screen bg-gradient-hero">
       {/* App Header with Greeting and Search */}
@@ -19,7 +35,7 @@ const Index = () => {
           
           {/* Bento Grid Categories */}
           <div className="flex-shrink-0 bg-background/95 backdrop-blur-md border-t border-border/50">
-            <BentoGrid />
+            <BentoGrid onNavigateToWorkoutPlan={handleNavigateToWorkoutPlan} />
           </div>
         </div>
       </div>
