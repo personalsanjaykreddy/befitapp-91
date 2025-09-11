@@ -39,9 +39,7 @@ const BentoCard = ({
     <div
       onClick={() => {
         onSelect?.(id);
-        if (id === "workout-plan") {
-          onNavigate?.(id);
-        }
+        onNavigate?.(id);
       }}
       className={cn(
         "relative group cursor-pointer rounded-lg p-4 transition-all duration-slow",
@@ -99,9 +97,11 @@ const BentoCard = ({
 
 interface BentoGridProps {
   onNavigateToWorkoutPlan?: () => void;
+  onNavigateToMealPlan?: () => void;
+  onNavigateToEnergyCalc?: () => void;
 }
 
-const BentoGrid = ({ onNavigateToWorkoutPlan }: BentoGridProps = {}) => {
+const BentoGrid = ({ onNavigateToWorkoutPlan, onNavigateToMealPlan, onNavigateToEnergyCalc }: BentoGridProps = {}) => {
   const [selectedCard, setSelectedCard] = useState<string | null>(null);
 
   const cards = [
@@ -171,7 +171,11 @@ const BentoGrid = ({ onNavigateToWorkoutPlan }: BentoGridProps = {}) => {
             {...card}
             isSelected={selectedCard === card.id}
             onSelect={setSelectedCard}
-            onNavigate={() => onNavigateToWorkoutPlan?.()}
+            onNavigate={(id) => {
+              if (id === "workout-plan") onNavigateToWorkoutPlan?.();
+              else if (id === "meals") onNavigateToMealPlan?.();
+              else if (id === "energy-calc") onNavigateToEnergyCalc?.();
+            }}
           />
         ))}
       </div>

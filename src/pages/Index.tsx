@@ -4,12 +4,22 @@ import HomeView from "@/components/HomeView";
 import BentoGrid from "@/components/BentoGrid";
 import BottomNavigation from "@/components/BottomNavigation";
 import WorkoutPlan from "@/components/WorkoutPlan";
+import MealPlan from "@/components/MealPlan";
+import EnergyCalculator from "@/components/EnergyCalculator";
 
 const Index = () => {
-  const [currentView, setCurrentView] = useState<"home" | "workout-plan">("home");
+  const [currentView, setCurrentView] = useState<"home" | "workout-plan" | "meal-plan" | "energy-calc">("home");
 
   const handleNavigateToWorkoutPlan = () => {
     setCurrentView("workout-plan");
+  };
+
+  const handleNavigateToMealPlan = () => {
+    setCurrentView("meal-plan");
+  };
+
+  const handleNavigateToEnergyCalc = () => {
+    setCurrentView("energy-calc");
   };
 
   const handleBackToHome = () => {
@@ -18,6 +28,14 @@ const Index = () => {
 
   if (currentView === "workout-plan") {
     return <WorkoutPlan onBack={handleBackToHome} />;
+  }
+
+  if (currentView === "meal-plan") {
+    return <MealPlan onBack={handleBackToHome} />;
+  }
+
+  if (currentView === "energy-calc") {
+    return <EnergyCalculator onBack={handleBackToHome} />;
   }
 
   return (
@@ -35,7 +53,11 @@ const Index = () => {
           
           {/* Bento Grid Categories */}
           <div className="flex-shrink-0 bg-background/95 backdrop-blur-md border-t border-border/50">
-            <BentoGrid onNavigateToWorkoutPlan={handleNavigateToWorkoutPlan} />
+            <BentoGrid 
+              onNavigateToWorkoutPlan={handleNavigateToWorkoutPlan}
+              onNavigateToMealPlan={handleNavigateToMealPlan}
+              onNavigateToEnergyCalc={handleNavigateToEnergyCalc}
+            />
           </div>
         </div>
       </div>
