@@ -1,4 +1,4 @@
-import { TrendingUp, Activity, Award, Calendar, Target, Flame, Footprints, Timer, Zap, Crown } from "lucide-react";
+import { TrendingUp, Activity, Award, Calendar, Target, Flame, Footprints, Timer, Zap } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 
@@ -12,10 +12,6 @@ const HomeView = () => {
             <h1 className="text-3xl font-bold text-foreground">Today</h1>
             <p className="text-sm text-muted-foreground">Keep pushing towards your goals</p>
           </div>
-          <Button size="sm" variant="outline" className="gap-2">
-            <Crown className="w-4 h-4" />
-            Go Premium
-          </Button>
         </div>
       </div>
 
@@ -156,6 +152,10 @@ const HomeView = () => {
           <Button 
             size="lg" 
             className="bg-gradient-primary text-primary-foreground h-14 shadow-selected hover:shadow-glow transition-all duration-slow hover:scale-105"
+            onClick={() => {
+              // Navigate to meal plan for food logging
+              window.dispatchEvent(new CustomEvent('navigate-to-meal-plan'));
+            }}
           >
             <Flame className="w-5 h-5 mr-2" />
             Log Food
@@ -164,6 +164,10 @@ const HomeView = () => {
             size="lg"
             variant="outline"
             className="h-14 border-primary/20 hover:bg-primary/5"
+            onClick={() => {
+              // Navigate to workout plan for exercise
+              window.dispatchEvent(new CustomEvent('navigate-to-workout-plan'));
+            }}
           >
             <Activity className="w-5 h-5 mr-2" />
             Add Exercise

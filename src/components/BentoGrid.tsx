@@ -4,11 +4,12 @@ import {
   Utensils, 
   UserPlus, 
   Calculator, 
-  Trophy, 
+  NotebookPen, 
   User,
   Play,
   Clock,
-  Target
+  Target,
+  TrendingUp
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -44,10 +45,10 @@ const BentoCard = ({
       className={cn(
         "relative group cursor-pointer rounded-lg p-4 transition-all duration-slow",
         "bg-gradient-card border border-border/50 shadow-sm hover:shadow-md",
-        "transform hover:scale-[1.02] active:scale-[0.98]",
+        "transform hover:scale-[1.02] active:scale-[0.98] hover:animate-highlight-cursor",
         isSelected && [
           "scale-[1.05] shadow-selected bg-gradient-selected",
-          "border-primary/30 animate-scale-selected"
+          "border-primary/30 animate-scale-selected animate-highlight-cursor"
         ]
       )}
     >
@@ -99,9 +100,12 @@ interface BentoGridProps {
   onNavigateToWorkoutPlan?: () => void;
   onNavigateToMealPlan?: () => void;
   onNavigateToEnergyCalc?: () => void;
+  onNavigateToProfile?: () => void;
+  onNavigateToNotepad?: () => void;
+  onNavigateToAnalytics?: () => void;
 }
 
-const BentoGrid = ({ onNavigateToWorkoutPlan, onNavigateToMealPlan, onNavigateToEnergyCalc }: BentoGridProps = {}) => {
+const BentoGrid = ({ onNavigateToWorkoutPlan, onNavigateToMealPlan, onNavigateToEnergyCalc, onNavigateToProfile, onNavigateToNotepad, onNavigateToAnalytics }: BentoGridProps = {}) => {
   const [selectedCard, setSelectedCard] = useState<string | null>(null);
 
   const cards = [
@@ -138,12 +142,20 @@ const BentoGrid = ({ onNavigateToWorkoutPlan, onNavigateToMealPlan, onNavigateTo
       stats: "23 friends nearby"
     },
     {
-      id: "challenges",
-      title: "Challenges",
-      description: "Join weekly fitness challenges and compete",
-      icon: Trophy,
+      id: "notepad",
+      title: "Notes & To-Do",
+      description: "Keep track of tasks and workout notes",
+      icon: NotebookPen,
       gradient: "bg-gradient-to-br from-purple-500 to-purple-600",
-      stats: "5 active challenges"
+      stats: "3 active tasks"
+    },
+    {
+      id: "analytics",
+      title: "Fitness Analytics",
+      description: "View all your health metrics in one place",
+      icon: TrendingUp,
+      gradient: "bg-gradient-to-br from-cyan-500 to-cyan-600",
+      stats: "Live tracking"
     },
     {
       id: "profile",
@@ -175,6 +187,9 @@ const BentoGrid = ({ onNavigateToWorkoutPlan, onNavigateToMealPlan, onNavigateTo
               if (id === "workout-plan") onNavigateToWorkoutPlan?.();
               else if (id === "meals") onNavigateToMealPlan?.();
               else if (id === "energy-calc") onNavigateToEnergyCalc?.();
+              else if (id === "profile") onNavigateToProfile?.();
+              else if (id === "notepad") onNavigateToNotepad?.();
+              else if (id === "analytics") onNavigateToAnalytics?.();
             }}
           />
         ))}

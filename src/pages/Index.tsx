@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import AppHeader from "@/components/AppHeader";
 import HomeView from "@/components/HomeView";
 import BentoGrid from "@/components/BentoGrid";
@@ -6,36 +6,76 @@ import BottomNavigation from "@/components/BottomNavigation";
 import WorkoutPlan from "@/components/WorkoutPlan";
 import MealPlan from "@/components/MealPlan";
 import EnergyCalculator from "@/components/EnergyCalculator";
+import PersonalProfile from "@/components/PersonalProfile";
+import NotePad from "@/components/NotePad";
+import FitnessAnalytics from "@/components/FitnessAnalytics";
+import SearchResults from "@/components/SearchResults";
 
 const Index = () => {
-  const [currentView, setCurrentView] = useState<"home" | "workout-plan" | "meal-plan" | "energy-calc">("home");
+  const [currentView, setCurrentView] = useState<"home" | "workout-plan" | "meal-plan" | "energy-calc" | "profile" | "notepad" | "analytics" | "search">("home");
 
-  const handleNavigateToWorkoutPlan = () => {
-    setCurrentView("workout-plan");
-  };
+  useEffect(() => {
+    const handleNavigation = (event: CustomEvent) => {
+      switch (event.type) {
+        case 'navigate-to-workout-plan':
+          setCurrentView('workout-plan');
+          break;
+        case 'navigate-to-meal-plan':
+          setCurrentView('meal-plan');
+          break;
+        case 'open-search':
+          setCurrentView('search');
+          break;
+      }
+    };
 
-  const handleNavigateToMealPlan = () => {
-    setCurrentView("meal-plan");
-  };
+    window.addEventListener('navigate-to-workout-plan', handleNavigation as EventListener);
+    window.addEventListener('navigate-to-meal-plan', handleNavigation as EventListener);
+    window.addEventListener('open-search', handleNavigation as EventListener);
 
-  const handleNavigateToEnergyCalc = () => {
-    setCurrentView("energy-calc");
-  };
-
-  const handleBackToHome = () => {
-    setCurrentView("home");
-  };
+    return () => {
+      window.removeEventListener('navigate-to-workout-plan', handleNavigation as EventListener);
+      window.removeEventListener('navigate-to-meal-plan', handleNavigation as EventListener);
+      window.removeEventListener('open-search', handleNavigation as EventListener);
+    };
+  }, []);
 
   if (currentView === "workout-plan") {
-    return <WorkoutPlan onBack={handleBackToHome} />;
+    return <WorkoutPlan onBack={() => setCurrentView("home")} />;
   }
 
   if (currentView === "meal-plan") {
-    return <MealPlan onBack={handleBackToHome} />;
+    return <MealPlan onBack={() => setCurrentView("home")} />;
   }
 
   if (currentView === "energy-calc") {
-    return <EnergyCalculator onBack={handleBackToHome} />;
+    return <EnergyCalculator onBack={() => setCurrentView("home")} />;
+  }
+
+  if (currentView === "profile") {
+    return <PersonalProfile onBack={() => setCurrentView("home")} />;
+  }
+
+  if (currentView === "notepad") {
+    return <NotePad onBack={() => setCurrentView("home")} />;
+  }
+
+  if (currentView === "analytics") {
+    return <FitnessAnalytics onBack={() => setCurrentView("home")} />;
+  }
+
+  if (currentView === "search") {
+    return (
+      <SearchResults
+        onBack={() => setCurrentView("home")}
+        onNavigateToWorkoutPlan={() => setCurrentView("workout-plan")}
+        onNavigateToMealPlan={() => setCurrentView("meal-plan")}
+        onNavigateToEnergyCalc={() => setCurrentView("energy-calc")}
+        onNavigateToProfile={() => setCurrentView("profile")}
+        onNavigateToNotepad={() => setCurrentView("notepad")}
+        onNavigateToAnalytics={() => setCurrentView("analytics")}
+      />
+    );
   }
 
   return (
@@ -53,11 +93,14 @@ const Index = () => {
           
           {/* Bento Grid Categories */}
           <div className="flex-shrink-0 bg-background/95 backdrop-blur-md border-t border-border/50">
-            <BentoGrid 
-              onNavigateToWorkoutPlan={handleNavigateToWorkoutPlan}
-              onNavigateToMealPlan={handleNavigateToMealPlan}
-              onNavigateToEnergyCalc={handleNavigateToEnergyCalc}
-            />
+          <BentoGrid 
+            onNavigateToWorkoutPlan={() => setCurrentView("workout-plan")}
+            onNavigateToMealPlan={() => setCurrentView("meal-plan")}
+            onNavigateToEnergyCalc={() => setCurrentView("energy-calc")}
+            onNavigateToProfile={() => setCurrentView("profile")}
+            onNavigateToNotepad={() => setCurrentView("notepad")}
+            onNavigateToAnalytics={() => setCurrentView("analytics")}
+          />
           </div>
         </div>
       </div>

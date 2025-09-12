@@ -33,8 +33,12 @@ const AppHeader = () => {
         <div className="relative flex-1 max-w-xs">
           <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
           <Input
-            placeholder="Search routes, places..."
-            className="pl-10 h-9 bg-card/50 border-border/50 rounded-lg text-sm"
+            placeholder="Search workouts, meals, analytics..."
+            className="pl-10 h-9 bg-card/50 border-border/50 rounded-lg text-sm cursor-pointer"
+            onClick={() => {
+              window.dispatchEvent(new CustomEvent('open-search'));
+            }}
+            readOnly
           />
         </div>
       </div>

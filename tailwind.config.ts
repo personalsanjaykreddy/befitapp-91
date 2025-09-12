@@ -126,6 +126,20 @@ export default {
           "0%, 100%": { transform: "translateY(0)" },
           "50%": { transform: "translateY(-2px)" },
         },
+        "highlight-cursor": {
+          "0%": { 
+            transform: "scale(1)",
+            boxShadow: "0 0 0 0 hsl(215 85% 55% / 0.7)"
+          },
+          "50%": { 
+            transform: "scale(1.05)",
+            boxShadow: "0 0 30px 10px hsl(215 85% 55% / 0.3)"
+          },
+          "100%": { 
+            transform: "scale(1)",
+            boxShadow: "0 0 0 0 hsl(215 85% 55% / 0)"
+          },
+        },
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
@@ -136,6 +150,7 @@ export default {
         "glow-pulse": "glow-pulse 2s ease-in-out infinite",
         "slide-up": "slide-up 0.4s ease-out",
         "bounce-gentle": "bounce-gentle 2s ease-in-out infinite",
+        "highlight-cursor": "highlight-cursor 1s ease-out",
       },
     },
   },
