@@ -9,7 +9,8 @@ import {
   Play,
   Clock,
   Target,
-  TrendingUp
+  TrendingUp,
+  Users
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -44,25 +45,25 @@ const BentoCard = ({
       }}
       className={cn(
         "relative group cursor-pointer rounded-lg p-4 transition-all duration-slow",
-        "bg-gradient-card border border-border/50 shadow-sm hover:shadow-md",
-        "transform hover:scale-[1.02] active:scale-[0.98] hover:animate-highlight-cursor",
+        "bg-gradient-card border border-border/50 shadow-sm hover:shadow-glow",
+        "transform hover:scale-[1.05] active:scale-[0.95] hover:animate-highlight-cursor",
         isSelected && [
-          "scale-[1.05] shadow-selected bg-gradient-selected",
+          "scale-[1.08] shadow-selected bg-gradient-selected",
           "border-primary/30 animate-scale-selected animate-highlight-cursor"
         ]
       )}
     >
       {/* Background Glow Effect */}
       {isSelected && (
-        <div className="absolute inset-0 rounded-lg bg-gradient-primary opacity-5 animate-glow-pulse" />
+        <div className="absolute inset-0 rounded-lg bg-gradient-primary opacity-10 animate-glow-pulse" />
       )}
       
       {/* Icon Container */}
       <div className={cn(
         "w-10 h-10 rounded-lg mb-3 flex items-center justify-center transition-all duration-normal",
         gradient,
-        "group-hover:scale-110",
-        isSelected && "scale-110 animate-bounce-gentle"
+        "group-hover:scale-125 group-hover:animate-bounce-gentle",
+        isSelected && "scale-125 animate-bounce-gentle"
       )}>
         <Icon className="w-5 h-5 text-white" />
       </div>
@@ -71,7 +72,7 @@ const BentoCard = ({
       <div className="space-y-1">
         <h3 className={cn(
           "font-semibold text-sm text-card-foreground transition-colors duration-normal",
-          isSelected && "text-primary"
+          isSelected ? "text-primary" : "group-hover:text-primary"
         )}>
           {title}
         </h3>
@@ -81,7 +82,7 @@ const BentoCard = ({
         {stats && (
           <p className={cn(
             "text-xs font-medium mt-2 transition-colors duration-normal",
-            isSelected ? "text-secondary" : "text-primary"
+            isSelected ? "text-secondary" : "text-primary group-hover:text-secondary"
           )}>
             {stats}
           </p>
@@ -90,7 +91,7 @@ const BentoCard = ({
       
       {/* Selected Indicator */}
       {isSelected && (
-        <div className="absolute -top-1 -right-1 w-3 h-3 bg-primary rounded-full border-2 border-background animate-scale-in" />
+        <div className="absolute -top-1 -right-1 w-4 h-4 bg-primary rounded-full border-2 border-background animate-scale-in shadow-glow" />
       )}
     </div>
   );
@@ -137,7 +138,7 @@ const BentoGrid = ({ onNavigateToWorkoutPlan, onNavigateToMealPlan, onNavigateTo
       id: "find-friends",
       title: "Find Friends & Coaches",
       description: "Connect with nearby friends and fitness coaches",
-      icon: UserPlus,
+      icon: Users,
       gradient: "bg-gradient-to-br from-warning to-orange-400",
       stats: "23 friends nearby"
     },
@@ -176,7 +177,7 @@ const BentoGrid = ({ onNavigateToWorkoutPlan, onNavigateToMealPlan, onNavigateTo
       </div>
       
       {/* Bento Grid */}
-      <div className="grid grid-cols-2 gap-3 animate-fade-in">
+      <div className="grid grid-cols-2 gap-4 animate-fade-in">
         {cards.map((card) => (
           <BentoCard
             key={card.id}
@@ -190,13 +191,16 @@ const BentoGrid = ({ onNavigateToWorkoutPlan, onNavigateToMealPlan, onNavigateTo
               else if (id === "profile") onNavigateToProfile?.();
               else if (id === "notepad") onNavigateToNotepad?.();
               else if (id === "analytics") onNavigateToAnalytics?.();
+              else if (id === "find-friends") {
+                window.dispatchEvent(new CustomEvent('navigate-to-find-friends'));
+              }
             }}
           />
         ))}
       </div>
       
       {/* Quick Stats Bar */}
-      <div className="mt-4 p-3 rounded-lg bg-gradient-card border border-border/50">
+      <div className="mt-4 p-3 rounded-lg bg-gradient-card border border-border/50 hover:shadow-md hover:scale-[1.02] transition-all duration-normal cursor-pointer">
         <div className="flex items-center justify-between text-xs">
           <div className="flex items-center gap-1 text-primary">
             <Play className="w-3 h-3" />

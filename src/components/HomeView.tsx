@@ -1,25 +1,34 @@
-import { TrendingUp, Activity, Award, Calendar, Target, Flame, Footprints, Timer, Zap } from "lucide-react";
+import { TrendingUp, Activity, Award, Calendar, Target, Flame, Footprints, Timer, Zap, Edit, Plus } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 
-const HomeView = () => {
+interface HomeViewProps {
+  onNavigateToEnergyCalc?: () => void;
+  onNavigateToNotes?: () => void;
+}
+
+const HomeView = ({ onNavigateToEnergyCalc, onNavigateToNotes }: HomeViewProps) => {
+  const today = new Date();
+  const dayName = today.toLocaleDateString('en-US', { weekday: 'long' });
+  const dateString = today.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+
   return (
     <div className="flex-1 bg-gradient-hero overflow-hidden">
-      {/* Today Section Header */}
-      <div className="relative px-6 pt-4 pb-2">
-        <div className="flex items-center justify-between">
-          <div>
-            <h1 className="text-3xl font-bold text-foreground">Today</h1>
-            <p className="text-sm text-muted-foreground">Keep pushing towards your goals</p>
-          </div>
-        </div>
-      </div>
-
       {/* Calories Circle - Main Focus */}
       <div className="px-6 pb-4">
-        <div className="bg-gradient-card border border-border/50 rounded-2xl p-6 shadow-lg">
+        <div className="bg-gradient-card border border-border/50 rounded-2xl p-6 shadow-lg hover:shadow-glow hover:scale-[1.02] transition-all duration-slow cursor-pointer group">
           <div className="text-center mb-4">
-            <h3 className="text-lg font-semibold text-foreground mb-1">Calories</h3>
+            <div className="flex items-center justify-center gap-2 mb-1">
+              <h3 className="text-lg font-semibold text-foreground group-hover:text-primary transition-colors">Calories</h3>
+              <Button 
+                size="sm" 
+                variant="ghost" 
+                onClick={onNavigateToEnergyCalc}
+                className="opacity-0 group-hover:opacity-100 transition-opacity hover:scale-110"
+              >
+                <Edit className="w-4 h-4" />
+              </Button>
+            </div>
             <p className="text-xs text-muted-foreground">Remaining = Goal - Food + Exercise</p>
           </div>
           
@@ -81,7 +90,7 @@ const HomeView = () => {
       {/* Activity Rings */}
       <div className="px-6 pb-4">
         <div className="grid grid-cols-2 gap-3">
-          <div className="bg-gradient-card border border-border/50 rounded-xl p-4">
+          <div className="bg-gradient-card border border-border/50 rounded-xl p-4 hover:shadow-md hover:scale-[1.02] transition-all duration-normal cursor-pointer">
             <div className="flex items-center gap-3">
               <div className="relative w-12 h-12">
                 <svg className="w-12 h-12 transform -rotate-90" viewBox="0 0 48 48">
@@ -99,7 +108,7 @@ const HomeView = () => {
             </div>
           </div>
 
-          <div className="bg-gradient-card border border-border/50 rounded-xl p-4">
+          <div className="bg-gradient-card border border-border/50 rounded-xl p-4 hover:shadow-md hover:scale-[1.02] transition-all duration-normal cursor-pointer">
             <div className="flex items-center gap-3">
               <div className="relative w-12 h-12">
                 <svg className="w-12 h-12 transform -rotate-90" viewBox="0 0 48 48">
@@ -119,12 +128,22 @@ const HomeView = () => {
         </div>
       </div>
 
-      {/* Weekly Progress */}
+      {/* Daily Goals with Update Feature */}
       <div className="px-6 pb-4">
-        <div className="bg-gradient-card border border-border/50 rounded-xl p-4">
+        <div className="bg-gradient-card border border-border/50 rounded-xl p-4 hover:shadow-selected hover:scale-[1.02] transition-all duration-slow cursor-pointer group">
           <div className="flex items-center justify-between mb-3">
-            <h3 className="font-semibold text-foreground">Your Daily Goals</h3>
-            <span className="text-sm text-muted-foreground">Last 7 days</span>
+            <div className="flex items-center gap-2">
+              <h3 className="font-semibold text-foreground group-hover:text-primary transition-colors">Daily Goals</h3>
+              <Button 
+                size="sm" 
+                variant="ghost" 
+                onClick={onNavigateToNotes}
+                className="opacity-0 group-hover:opacity-100 transition-opacity hover:scale-110"
+              >
+                <Edit className="w-4 h-4" />
+              </Button>
+            </div>
+            <span className="text-sm text-muted-foreground">{dayName}, {dateString}</span>
           </div>
           
           <div className="flex items-center gap-2 mb-3">
@@ -146,31 +165,28 @@ const HomeView = () => {
         </div>
       </div>
 
-      {/* Quick Actions */}
+      {/* Special Features */}
       <div className="px-6 pb-6">
         <div className="grid grid-cols-2 gap-3">
           <Button 
             size="lg" 
-            className="bg-gradient-primary text-primary-foreground h-14 shadow-selected hover:shadow-glow transition-all duration-slow hover:scale-105"
-            onClick={() => {
-              // Navigate to meal plan for food logging
-              window.dispatchEvent(new CustomEvent('navigate-to-meal-plan'));
-            }}
+            className="bg-gradient-primary text-primary-foreground h-14 shadow-selected hover:shadow-glow transition-all duration-slow hover:scale-110 active:scale-95"
+            onClick={onNavigateToEnergyCalc}
           >
-            <Flame className="w-5 h-5 mr-2" />
-            Log Food
+            <Plus className="w-5 h-5 mr-2" />
+            Quick Log
           </Button>
           <Button
             size="lg"
             variant="outline"
-            className="h-14 border-primary/20 hover:bg-primary/5"
+            className="h-14 border-primary/20 hover:bg-primary/5 hover:scale-110 active:scale-95 transition-all duration-slow"
             onClick={() => {
               // Navigate to workout plan for exercise
               window.dispatchEvent(new CustomEvent('navigate-to-workout-plan'));
             }}
           >
             <Activity className="w-5 h-5 mr-2" />
-            Add Exercise
+            Start Workout
           </Button>
         </div>
       </div>

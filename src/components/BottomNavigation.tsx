@@ -3,7 +3,8 @@ import {
   Home, 
   Dumbbell, 
   Utensils, 
-  StickyNote
+  Brain,
+  MoreHorizontal
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -20,29 +21,29 @@ const NavItem = ({ id, label, icon: Icon, isActive, onSelect }: NavItemProps) =>
     <button
       onClick={() => onSelect?.(id)}
       className={cn(
-        "flex flex-col items-center justify-center py-2 px-3 rounded-lg transition-all duration-normal min-w-0 flex-1",
-        "hover:bg-accent/50 active:scale-95",
+        "flex flex-col items-center justify-center py-2 px-3 rounded-lg transition-all duration-normal min-w-0 flex-1 group",
+        "hover:bg-accent/50 active:scale-95 hover:scale-110",
         isActive && [
           "bg-gradient-selected text-primary",
-          "shadow-sm"
+          "shadow-sm scale-110"
         ]
       )}
     >
       <div className={cn(
-        "relative mb-1 transition-all duration-normal",
-        isActive && "animate-bounce-gentle"
+        "relative mb-1 transition-all duration-normal group-hover:animate-bounce-gentle",
+        isActive && "animate-bounce-gentle scale-110"
       )}>
         <Icon className={cn(
           "w-5 h-5 transition-colors duration-normal",
-          isActive ? "text-primary" : "text-muted-foreground"
+          isActive ? "text-primary" : "text-muted-foreground group-hover:text-primary"
         )} />
         {isActive && (
-          <div className="absolute inset-0 bg-primary/20 rounded-full blur-md animate-glow-pulse" />
+          <div className="absolute inset-0 bg-primary/30 rounded-full blur-lg animate-glow-pulse" />
         )}
       </div>
       <span className={cn(
         "text-xs font-medium transition-colors duration-normal",
-        isActive ? "text-primary" : "text-muted-foreground"
+        isActive ? "text-primary" : "text-muted-foreground group-hover:text-primary"
       )}>
         {label}
       </span>
@@ -50,7 +51,11 @@ const NavItem = ({ id, label, icon: Icon, isActive, onSelect }: NavItemProps) =>
   );
 };
 
-const BottomNavigation = () => {
+interface BottomNavigationProps {
+  onNavigate?: (section: string) => void;
+}
+
+const BottomNavigation = ({ onNavigate }: BottomNavigationProps) => {
   const [activeTab, setActiveTab] = useState("home");
 
   const navItems = [
@@ -70,16 +75,26 @@ const BottomNavigation = () => {
       icon: Utensils
     },
     {
-      id: "notes",
-      label: "Notes",
-      icon: StickyNote
+      id: "mental-health",
+      label: "Mental",
+      icon: Brain
+    },
+    {
+      id: "others",
+      label: "More",
+      icon: MoreHorizontal
     }
   ];
 
+  const handleTabSelect = (id: string) => {
+    setActiveTab(id);
+    onNavigate?.(id);
+  };
+
   return (
-    <nav className="relative bg-background/95 backdrop-blur-md border-t border-border/50 px-2 py-2 animate-slide-up">
+    <nav className="relative bg-background/95 backdrop-blur-md border-t border-border/50 px-2 py-2 animate-slide-up shadow-lg">
       {/* Background Gradient */}
-      <div className="absolute inset-0 bg-gradient-to-t from-background/95 to-background/80" />
+      <div className="absolute inset-0 bg-gradient-to-t from-background/98 to-background/90" />
       
       {/* Navigation Items */}
       <div className="relative flex items-center justify-between gap-1">
@@ -88,18 +103,19 @@ const BottomNavigation = () => {
             key={item.id}
             {...item}
             isActive={activeTab === item.id}
-            onSelect={setActiveTab}
+            onSelect={handleTabSelect}
           />
         ))}
       </div>
       
       {/* Active Tab Indicator */}
       <div className={cn(
-        "absolute bottom-0 left-0 h-0.5 bg-gradient-primary transition-all duration-slow rounded-full",
-        activeTab === "home" && "w-1/4 transform translate-x-0",
-        activeTab === "workouts" && "w-1/4 transform translate-x-full",
-        activeTab === "meals" && "w-1/4 transform translate-x-[200%]",
-        activeTab === "notes" && "w-1/4 transform translate-x-[300%]"
+        "absolute bottom-0 left-0 h-1 bg-gradient-primary transition-all duration-slow rounded-full shadow-glow",
+        activeTab === "home" && "w-1/5 transform translate-x-0",
+        activeTab === "workouts" && "w-1/5 transform translate-x-full",
+        activeTab === "meals" && "w-1/5 transform translate-x-[200%]",
+        activeTab === "mental-health" && "w-1/5 transform translate-x-[300%]",
+        activeTab === "others" && "w-1/5 transform translate-x-[400%]"
       )} />
     </nav>
   );
