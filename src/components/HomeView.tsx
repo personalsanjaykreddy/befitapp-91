@@ -20,14 +20,12 @@ const HomeView = ({ onNavigateToEnergyCalc, onNavigateToNotes }: HomeViewProps) 
           <div className="text-center mb-4">
             <div className="flex items-center justify-center gap-2 mb-1">
               <h3 className="text-lg font-semibold text-foreground group-hover:text-primary transition-colors">Calories</h3>
-              <Button 
-                size="sm" 
-                variant="ghost" 
+              <button 
                 onClick={onNavigateToEnergyCalc}
-                className="opacity-0 group-hover:opacity-100 transition-opacity hover:scale-110"
+                className="text-xs px-2 py-1 bg-green-500/10 text-green-600 rounded-md hover:bg-green-500/20 transition-colors font-medium"
               >
-                <Edit className="w-4 h-4" />
-              </Button>
+                update
+              </button>
             </div>
             <p className="text-xs text-muted-foreground">Remaining = Goal - Food + Exercise</p>
           </div>

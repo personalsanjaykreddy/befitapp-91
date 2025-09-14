@@ -1,17 +1,8 @@
 import { useState, useEffect } from "react";
-import { Search, X, Clock, Utensils, Activity, Calculator, User, NotebookPen, TrendingUp } from "lucide-react";
+import { ArrowLeft, Search, Filter, Dumbbell, Apple, Calculator, User, BookOpen, BarChart3, Activity, Heart, Zap, Target, Brain, Users, MapPin, Camera, TrendingUp } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card } from "@/components/ui/card";
-
-interface SearchResult {
-  id: string;
-  title: string;
-  description: string;
-  category: string;
-  icon: React.ElementType;
-  action: () => void;
-}
 
 interface SearchResultsProps {
   onBack: () => void;
@@ -23,279 +14,245 @@ interface SearchResultsProps {
   onNavigateToAnalytics: () => void;
 }
 
+const APP_FEATURES = [
+  { 
+    name: "Workout Plans", 
+    icon: Dumbbell, 
+    description: "Personalized exercise routines",
+    action: "onNavigateToWorkoutPlan",
+    category: "Fitness"
+  },
+  { 
+    name: "Meal Plans", 
+    icon: Apple, 
+    description: "Nutrition tracking & meal planning",
+    action: "onNavigateToMealPlan",
+    category: "Nutrition"
+  },
+  { 
+    name: "Energy Calculator", 
+    icon: Calculator, 
+    description: "Track calories & energy balance",
+    action: "onNavigateToEnergyCalc",
+    category: "Analytics"
+  },
+  { 
+    name: "Personal Profile", 
+    icon: User, 
+    description: "Manage your fitness profile",
+    action: "onNavigateToProfile",
+    category: "Profile"
+  },
+  { 
+    name: "Fitness Analytics", 
+    icon: BarChart3, 
+    description: "Track your progress & metrics",
+    action: "onNavigateToAnalytics",
+    category: "Analytics"
+  },
+  { 
+    name: "Notes & Goals", 
+    icon: BookOpen, 
+    description: "Personal notes & goal tracking",
+    action: "onNavigateToNotepad",
+    category: "Planning"
+  },
+  { 
+    name: "AI Coach", 
+    icon: Brain, 
+    description: "Personalized AI fitness guidance",
+    action: "ai-coach",
+    category: "AI"
+  },
+  { 
+    name: "Pose Detection", 
+    icon: Camera, 
+    description: "Real-time form correction",
+    action: "pose-detection",
+    category: "AI"
+  },
+  { 
+    name: "Habit Tracker", 
+    icon: Target, 
+    description: "Build & maintain healthy habits",
+    action: "habits",
+    category: "Habits"
+  },
+  { 
+    name: "Mental Health", 
+    icon: Heart, 
+    description: "Wellness & mindfulness tools",
+    action: "mental-health",
+    category: "Wellness"
+  },
+  { 
+    name: "Social Competitions", 
+    icon: Users, 
+    description: "Compete with friends",
+    action: "social",
+    category: "Social"
+  },
+  { 
+    name: "Local Experiences", 
+    icon: MapPin, 
+    description: "Find nearby fitness activities",
+    action: "local-experiences",
+    category: "Community"
+  }
+];
+
 const SearchResults = ({ 
   onBack, 
-  onNavigateToWorkoutPlan, 
-  onNavigateToMealPlan, 
+  onNavigateToWorkoutPlan,
+  onNavigateToMealPlan,
   onNavigateToEnergyCalc,
   onNavigateToProfile,
   onNavigateToNotepad,
   onNavigateToAnalytics
 }: SearchResultsProps) => {
   const [searchQuery, setSearchQuery] = useState("");
-  const [filteredResults, setFilteredResults] = useState<SearchResult[]>([]);
-  const [recentSearches, setRecentSearches] = useState<string[]>([]);
-
-  // All searchable content in the app
-  const allResults: SearchResult[] = [
-    {
-      id: "workout-plan",
-      title: "Workout Plan",
-      description: "Create personalized workout routines",
-      category: "Fitness",
-      icon: Activity,
-      action: onNavigateToWorkoutPlan
-    },
-    {
-      id: "meal-plan", 
-      title: "Meal Plans",
-      description: "Discover healthy recipes and nutrition",
-      category: "Nutrition",
-      icon: Utensils,
-      action: onNavigateToMealPlan
-    },
-    {
-      id: "energy-calc",
-      title: "Energy Calculator", 
-      description: "Calculate calories and nutrition",
-      category: "Analytics",
-      icon: Calculator,
-      action: onNavigateToEnergyCalc
-    },
-    {
-      id: "profile",
-      title: "Personal Profile",
-      description: "Manage your personal details",
-      category: "Profile",
-      icon: User,
-      action: onNavigateToProfile
-    },
-    {
-      id: "notepad",
-      title: "Notes & To-Do",
-      description: "Keep track of tasks and notes",
-      category: "Productivity",
-      icon: NotebookPen,
-      action: onNavigateToNotepad
-    },
-    {
-      id: "analytics",
-      title: "Fitness Analytics",
-      description: "View your health metrics",
-      category: "Analytics", 
-      icon: TrendingUp,
-      action: onNavigateToAnalytics
-    },
-    // Exercise types
-    {
-      id: "strength-training",
-      title: "Strength Training",
-      description: "Build muscle with resistance exercises",
-      category: "Exercise",
-      icon: Activity,
-      action: onNavigateToWorkoutPlan
-    },
-    {
-      id: "cardio",
-      title: "Cardio Workouts", 
-      description: "Improve cardiovascular health",
-      category: "Exercise",
-      icon: Activity,
-      action: onNavigateToWorkoutPlan
-    },
-    {
-      id: "yoga",
-      title: "Yoga & Flexibility",
-      description: "Improve flexibility and mindfulness",
-      category: "Exercise",
-      icon: Activity,
-      action: onNavigateToWorkoutPlan
-    },
-    // Nutrition content
-    {
-      id: "pre-workout-meal",
-      title: "Pre-workout Meals",
-      description: "Fuel your workouts properly",
-      category: "Nutrition",
-      icon: Utensils,
-      action: onNavigateToMealPlan
-    },
-    {
-      id: "post-workout-meal",
-      title: "Post-workout Recovery",
-      description: "Optimize recovery with nutrition",
-      category: "Nutrition", 
-      icon: Utensils,
-      action: onNavigateToMealPlan
-    },
-    {
-      id: "protein",
-      title: "High Protein Foods",
-      description: "Build muscle with protein-rich meals",
-      category: "Nutrition",
-      icon: Utensils,
-      action: onNavigateToMealPlan
-    },
-    // Analytics terms
-    {
-      id: "calories",
-      title: "Calorie Tracking",
-      description: "Monitor your daily calorie intake",
-      category: "Analytics",
-      icon: Calculator,
-      action: onNavigateToEnergyCalc
-    },
-    {
-      id: "steps",
-      title: "Step Counter",
-      description: "Track your daily steps",
-      category: "Analytics",
-      icon: TrendingUp,
-      action: onNavigateToAnalytics
-    },
-    {
-      id: "bmi",
-      title: "BMI Calculator",
-      description: "Calculate your body mass index",
-      category: "Analytics",
-      icon: Calculator,
-      action: onNavigateToProfile
-    }
-  ];
+  const [selectedCategory, setSelectedCategory] = useState("All");
+  const [showFeatures, setShowFeatures] = useState(true);
 
   useEffect(() => {
-    // Load recent searches
-    const saved = localStorage.getItem('recentSearches');
-    if (saved) {
-      setRecentSearches(JSON.parse(saved));
-    }
-  }, []);
-
-  useEffect(() => {
-    if (searchQuery.trim() === "") {
-      setFilteredResults([]);
-      return;
-    }
-
-    const query = searchQuery.toLowerCase();
-    const results = allResults.filter(item =>
-      item.title.toLowerCase().includes(query) ||
-      item.description.toLowerCase().includes(query) ||
-      item.category.toLowerCase().includes(query)
-    );
-
-    setFilteredResults(results);
+    setShowFeatures(searchQuery.trim() === "");
   }, [searchQuery]);
 
-  const handleSearch = (query: string) => {
-    setSearchQuery(query);
-    if (query.trim() && !recentSearches.includes(query)) {
-      const updated = [query, ...recentSearches.slice(0, 4)]; // Keep last 5
-      setRecentSearches(updated);
-      localStorage.setItem('recentSearches', JSON.stringify(updated));
+  const categories = ["All", "Fitness", "Nutrition", "Analytics", "Wellness", "AI", "Social", "Community"];
+
+  const actionMap: Record<string, () => void> = {
+    onNavigateToWorkoutPlan,
+    onNavigateToMealPlan, 
+    onNavigateToEnergyCalc,
+    onNavigateToProfile,
+    onNavigateToNotepad,
+    onNavigateToAnalytics
+  };
+
+  const handleFeatureClick = (feature: typeof APP_FEATURES[0]) => {
+    if (actionMap[feature.action]) {
+      actionMap[feature.action]();
+    } else {
+      // Navigate to other features
+      window.dispatchEvent(new CustomEvent(`navigate-to-${feature.action}`));
     }
   };
 
-  const handleResultClick = (result: SearchResult) => {
-    handleSearch(result.title);
-    result.action();
-  };
-
-  const categories = [...new Set(filteredResults.map(r => r.category))];
+  const filteredFeatures = APP_FEATURES.filter(feature => {
+    const matchesSearch = feature.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                         feature.description.toLowerCase().includes(searchQuery.toLowerCase());
+    const matchesCategory = selectedCategory === "All" || feature.category === selectedCategory;
+    return matchesSearch && matchesCategory;
+  });
 
   return (
-    <div className="flex-1 bg-gradient-hero overflow-hidden">
+    <div className="flex flex-col h-screen bg-gradient-hero">
       {/* Header */}
-      <div className="relative px-6 pt-4 pb-2">
+      <div className="bg-background/95 backdrop-blur-md border-b border-border/50 px-4 py-3 shadow-sm">
         <div className="flex items-center gap-3">
-          <Button onClick={onBack} variant="outline" size="sm">
-            <X className="w-4 h-4" />
+          <Button variant="ghost" size="icon" onClick={onBack} className="hover:scale-110 transition-transform duration-normal">
+            <ArrowLeft className="w-4 h-4" />
           </Button>
-          <div className="flex-1">
-            <h1 className="text-xl font-bold text-foreground">Search</h1>
-          </div>
+          <h1 className="text-lg font-semibold text-foreground">Search</h1>
         </div>
       </div>
 
-      <div className="px-6 pb-6">
+      <div className="flex-1 p-4 space-y-4">
         {/* Search Input */}
-        <div className="relative mb-6">
+        <div className="relative">
           <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
           <Input
-            placeholder="Search workouts, meals, analytics..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="pl-10 h-12 bg-card/50 border-border/50 rounded-lg"
+            placeholder="Search features, workouts, meals..."
+            className="pl-10 h-12 bg-card/50 border-border/50 rounded-xl"
             autoFocus
           />
         </div>
 
-        {/* Recent Searches */}
-        {searchQuery === "" && recentSearches.length > 0 && (
+        {/* Category Filter */}
+        <div className="flex gap-2 overflow-x-auto pb-2">
+          {categories.map((category) => (
+            <Button
+              key={category}
+              variant={selectedCategory === category ? "default" : "outline"}
+              size="sm"
+              onClick={() => setSelectedCategory(category)}
+              className="whitespace-nowrap hover:scale-105 transition-transform duration-normal"
+            >
+              {category}
+            </Button>
+          ))}
+        </div>
+
+        {/* App Features */}
+        {showFeatures && (
           <div className="mb-6">
-            <h3 className="text-sm font-medium text-foreground mb-3 flex items-center gap-2">
-              <Clock className="w-4 h-4" />
-              Recent Searches
+            <h3 className="text-lg font-semibold text-foreground mb-3 flex items-center gap-2">
+              <TrendingUp className="w-5 h-5 text-primary" />
+              App Features
             </h3>
-            <div className="space-y-2">
-              {recentSearches.map((search, index) => (
-                <button
-                  key={index}
-                  onClick={() => setSearchQuery(search)}
-                  className="w-full text-left p-3 rounded-lg bg-card/50 border border-border/50 hover:bg-card transition-colors"
-                >
-                  <span className="text-sm text-foreground">{search}</span>
-                </button>
-              ))}
+            <div className="grid grid-cols-1 gap-3">
+              {APP_FEATURES.map((feature, index) => {
+                const Icon = feature.icon;
+                return (
+                  <Card 
+                    key={index}
+                    className="p-4 bg-gradient-card border-border/50 hover:shadow-selected hover:scale-[1.02] transition-all duration-normal cursor-pointer group"
+                    onClick={() => handleFeatureClick(feature)}
+                  >
+                    <div className="flex items-center gap-3">
+                      <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center text-primary group-hover:bg-primary/20 transition-colors">
+                        <Icon className="w-5 h-5" />
+                      </div>
+                      <div className="flex-1">
+                        <h4 className="font-semibold text-foreground group-hover:text-primary transition-colors">{feature.name}</h4>
+                        <p className="text-sm text-muted-foreground">{feature.description}</p>
+                      </div>
+                      <div className="text-xs text-muted-foreground bg-muted px-2 py-1 rounded">
+                        {feature.category}
+                      </div>
+                    </div>
+                  </Card>
+                );
+              })}
             </div>
           </div>
         )}
 
         {/* Search Results */}
-        {searchQuery !== "" && (
-          <div className="space-y-4">
-            {filteredResults.length === 0 ? (
-              <div className="text-center py-8">
-                <Search className="w-12 h-12 text-muted-foreground mx-auto mb-2" />
-                <p className="text-foreground font-medium">No results found</p>
-                <p className="text-sm text-muted-foreground">Try searching for workouts, meals, or analytics</p>
-              </div>
-            ) : (
-              <>
-                <p className="text-sm text-muted-foreground">
-                  {filteredResults.length} result{filteredResults.length !== 1 ? 's' : ''} found
-                </p>
-                
-                {categories.map(category => (
-                  <div key={category}>
-                    <h3 className="text-sm font-medium text-foreground mb-2 px-2">
-                      {category}
-                    </h3>
-                    <div className="space-y-2">
-                      {filteredResults
-                        .filter(result => result.category === category)
-                        .map(result => (
-                          <Card
-                            key={result.id}
-                            className="p-4 bg-gradient-card border border-border/50 cursor-pointer hover:shadow-md transition-all hover:scale-[1.01]"
-                            onClick={() => handleResultClick(result)}
-                          >
-                            <div className="flex items-center gap-3">
-                              <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center">
-                                <result.icon className="w-5 h-5 text-primary" />
-                              </div>
-                              <div>
-                                <h4 className="font-medium text-foreground">{result.title}</h4>
-                                <p className="text-sm text-muted-foreground">{result.description}</p>
-                              </div>
-                            </div>
-                          </Card>
-                        ))
-                      }
+        {!showFeatures && (
+          <div className="space-y-3">
+            {filteredFeatures.length > 0 ? (
+              filteredFeatures.map((feature, index) => {
+                const Icon = feature.icon;
+                return (
+                  <Card 
+                    key={index}
+                    className="p-4 bg-gradient-card border-border/50 hover:shadow-selected hover:scale-[1.02] transition-all duration-normal cursor-pointer group"
+                    onClick={() => handleFeatureClick(feature)}
+                  >
+                    <div className="flex items-center gap-3">
+                      <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center text-primary group-hover:bg-primary/20 transition-colors">
+                        <Icon className="w-5 h-5" />
+                      </div>
+                      <div className="flex-1">
+                        <h4 className="font-semibold text-foreground group-hover:text-primary transition-colors">{feature.name}</h4>
+                        <p className="text-sm text-muted-foreground">{feature.description}</p>
+                      </div>
+                      <div className="text-xs text-muted-foreground bg-muted px-2 py-1 rounded">
+                        {feature.category}
+                      </div>
                     </div>
-                  </div>
-                ))}
-              </>
+                  </Card>
+                );
+              })
+            ) : (
+              <div className="text-center py-8">
+                <Search className="w-12 h-12 text-muted-foreground mx-auto mb-4" />
+                <p className="text-muted-foreground">No results found for "{searchQuery}"</p>
+                <p className="text-sm text-muted-foreground mt-2">Try different keywords or browse categories</p>
+              </div>
             )}
           </div>
         )}

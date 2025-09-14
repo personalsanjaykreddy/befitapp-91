@@ -31,38 +31,52 @@ const Index = () => {
   const [navigationHistory, setNavigationHistory] = useState<string[]>(["home"]);
 
   useEffect(() => {
-    // Check if user profile exists
+    // Check if user profile exists and user hasn't completed setup
     const savedProfile = localStorage.getItem('userProfile');
+    const hasCompletedSetup = localStorage.getItem('hasCompletedSetup');
+    
     if (savedProfile) {
       setUserProfile(JSON.parse(savedProfile));
-    } else {
+    } else if (!hasCompletedSetup) {
       setShowProfileSetup(true);
     }
   }, []);
 
   useEffect(() => {
     const handleNavigation = (event: CustomEvent) => {
-      switch (event.type) {
-        case 'navigate-to-workout-plan':
-          navigateToView('workout-plan');
-          break;
-        case 'navigate-to-meal-plan':
-          navigateToView('meal-plan');
-          break;
-        case 'open-search':
-          navigateToView('search');
-          break;
+      const eventToViewMap: Record<string, string> = {
+        'navigate-to-workout-plan': 'workout-plan',
+        'navigate-to-meal-plan': 'meal-plan',
+        'open-search': 'search',
+        'navigate-to-ai-coach': 'ai-coach',
+        'navigate-to-pose-detection': 'pose-detection',
+        'navigate-to-habits': 'habits',
+        'navigate-to-mental-health': 'mental-health',
+        'navigate-to-social': 'social',
+        'navigate-to-local-experiences': 'local-experiences'
+      };
+      
+      const viewName = eventToViewMap[event.type];
+      if (viewName) {
+        navigateToView(viewName);
       }
     };
 
-    window.addEventListener('navigate-to-workout-plan', handleNavigation as EventListener);
-    window.addEventListener('navigate-to-meal-plan', handleNavigation as EventListener);
-    window.addEventListener('open-search', handleNavigation as EventListener);
+    // Add event listeners for all navigation events
+    const eventTypes = [
+      'navigate-to-workout-plan', 'navigate-to-meal-plan', 'open-search',
+      'navigate-to-ai-coach', 'navigate-to-pose-detection', 'navigate-to-habits',
+      'navigate-to-mental-health', 'navigate-to-social', 'navigate-to-local-experiences'
+    ];
+    
+    eventTypes.forEach(eventType => {
+      window.addEventListener(eventType, handleNavigation as EventListener);
+    });
 
     return () => {
-      window.removeEventListener('navigate-to-workout-plan', handleNavigation as EventListener);
-      window.removeEventListener('navigate-to-meal-plan', handleNavigation as EventListener);
-      window.removeEventListener('open-search', handleNavigation as EventListener);
+      eventTypes.forEach(eventType => {
+        window.removeEventListener(eventType, handleNavigation as EventListener);
+      });
     };
   }, []);
 
@@ -106,6 +120,12 @@ const Index = () => {
 
   const handleProfileComplete = (profile: any) => {
     setUserProfile(profile);
+    localStorage.setItem('hasCompletedSetup', 'true');
+    setShowProfileSetup(false);
+  };
+
+  const handleProfileSkip = () => {
+    localStorage.setItem('hasCompletedSetup', 'true');
     setShowProfileSetup(false);
   };
 
@@ -113,7 +133,7 @@ const Index = () => {
     return (
       <UserProfileSetup 
         onComplete={handleProfileComplete}
-        onSkip={() => setShowProfileSetup(false)}
+        onSkip={handleProfileSkip}
       />
     );
   }
@@ -220,7 +240,10 @@ const Index = () => {
   return (
     <div className="flex flex-col h-screen bg-gradient-hero">
       {/* App Header with Greeting and Search */}
-      <AppHeader userName={userProfile?.name} />
+      <AppHeader 
+        userName={userProfile?.name} 
+        onOpenProfile={() => navigateToView("profile")}
+      />
       
       {/* Main Content Area - Scrollable */}
       <div className="flex-1 overflow-y-auto">
