@@ -32,13 +32,19 @@ const Index = () => {
 
   useEffect(() => {
     // Check if user profile exists and user hasn't completed setup
-    const savedProfile = localStorage.getItem('userProfile');
-    const hasCompletedSetup = localStorage.getItem('hasCompletedSetup');
-    
-    if (savedProfile) {
-      setUserProfile(JSON.parse(savedProfile));
-    } else if (!hasCompletedSetup) {
-      setShowProfileSetup(true);
+    try {
+      const savedProfile = localStorage.getItem('userProfile');
+      const hasCompletedSetup = localStorage.getItem('hasCompletedSetup');
+      
+      if (savedProfile) {
+        setUserProfile(JSON.parse(savedProfile));
+      } else if (!hasCompletedSetup) {
+        setShowProfileSetup(true);
+      }
+    } catch (error) {
+      console.error('Error loading user profile:', error);
+      // If there's an error, just continue without profile setup
+      setShowProfileSetup(false);
     }
   }, []);
 
@@ -129,14 +135,8 @@ const Index = () => {
     setShowProfileSetup(false);
   };
 
-  if (showProfileSetup) {
-    return (
-      <UserProfileSetup 
-        onComplete={handleProfileComplete}
-        onSkip={handleProfileSkip}
-      />
-    );
-  }
+  // Profile setup modal (optional, doesn't block main app)
+  // Removed blocking profile setup to ensure app always renders
 
   if (currentView === "workout-plan") {
     return <WorkoutPlan onBack={goBack} />;
@@ -239,6 +239,14 @@ const Index = () => {
 
   return (
     <div className="flex flex-col h-screen bg-gradient-hero">
+      {/* Optional Profile Setup Modal */}
+      {showProfileSetup && (
+        <UserProfileSetup 
+          onComplete={handleProfileComplete}
+          onSkip={handleProfileSkip}
+        />
+      )}
+      
       {/* App Header with Greeting and Search */}
       <AppHeader 
         userName={userProfile?.name} 
