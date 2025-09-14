@@ -1,5 +1,22 @@
 import { useState, useEffect } from "react";
-import { ArrowLeft, Search, Filter, Dumbbell, Apple, Calculator, User, BookOpen, BarChart3, Activity, Heart, Zap, Target, Brain, Users, MapPin, Camera, TrendingUp } from "lucide-react";
+import { 
+  ArrowLeft, 
+  Search, 
+  Dumbbell, 
+  Apple, 
+  Calculator, 
+  User, 
+  BookOpen, 
+  BarChart3, 
+  Activity, 
+  Heart, 
+  Target, 
+  Brain, 
+  Users, 
+  MapPin, 
+  Camera, 
+  TrendingUp 
+} from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card } from "@/components/ui/card";
@@ -194,7 +211,7 @@ const SearchResults = ({
             </h3>
             <div className="grid grid-cols-1 gap-3">
               {APP_FEATURES.map((feature, index) => {
-                const Icon = feature.icon;
+                const IconComponent = feature.icon;
                 return (
                   <Card 
                     key={index}
@@ -203,7 +220,7 @@ const SearchResults = ({
                   >
                     <div className="flex items-center gap-3">
                       <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center text-primary group-hover:bg-primary/20 transition-colors">
-                        <Icon className="w-5 h-5" />
+                        <IconComponent className="w-5 h-5" />
                       </div>
                       <div className="flex-1">
                         <h4 className="font-semibold text-foreground group-hover:text-primary transition-colors">{feature.name}</h4>
@@ -225,7 +242,7 @@ const SearchResults = ({
           <div className="space-y-3">
             {filteredFeatures.length > 0 ? (
               filteredFeatures.map((feature, index) => {
-                const Icon = feature.icon;
+                const IconComponent = feature.icon;
                 return (
                   <Card 
                     key={index}
@@ -234,7 +251,7 @@ const SearchResults = ({
                   >
                     <div className="flex items-center gap-3">
                       <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center text-primary group-hover:bg-primary/20 transition-colors">
-                        <Icon className="w-5 h-5" />
+                        <IconComponent className="w-5 h-5" />
                       </div>
                       <div className="flex-1">
                         <h4 className="font-semibold text-foreground group-hover:text-primary transition-colors">{feature.name}</h4>
