@@ -1,73 +1,82 @@
-# Welcome to your Lovable project
+# Fit Map Voyage - Fitness Tracking App
 
-## Project info
+A comprehensive fitness tracking web application built with modern React technologies. This app provides workout planning, meal tracking, mental health support, social features, and more - all designed for optimal user experience across desktop and mobile devices.
 
-**URL**: https://lovable.dev/projects/889571e4-c819-4840-983b-a1f725ba0e5c
+## 🚀 Quick Start
 
-## How can I edit this code?
+```bash
+# Install dependencies
+npm install
 
-There are several ways of editing your application.
-
-**Use Lovable**
-
-Simply visit the [Lovable Project](https://lovable.dev/projects/889571e4-c819-4840-983b-a1f725ba0e5c) and start prompting.
-
-Changes made via Lovable will be committed automatically to this repo.
-
-**Use your preferred IDE**
-
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
-
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
-
-Follow these steps:
-
-```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
-
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
-
-# Step 3: Install the necessary dependencies.
-npm i
-
-# Step 4: Start the development server with auto-reloading and an instant preview.
+# Start development server  
 npm run dev
+
+# Build for production
+npm run build
+
+# Preview production build
+npm run preview
+
+# Run smoke tests
+npm run smoke
 ```
 
-**Edit a file directly in GitHub**
+## ✨ Features
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
+- **User Profile Management**: Complete profile setup with personalization
+- **Workout Planning**: AI-powered workout recommendations and tracking  
+- **Meal Planning**: Smart nutrition tracking and meal suggestions
+- **Mental Health Hub**: Mood tracking and wellness activities
+- **Habit Tracking**: Daily micro-habits and streak monitoring
+- **Fitness Analytics**: Comprehensive progress tracking and insights
+- **AI Coach**: Personalized fitness guidance
+- **Pose Detection**: Real-time exercise form analysis
+- **Social Features**: Community competitions and challenges
 
-**Use GitHub Codespaces**
+## 🛠️ Technology Stack
 
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
+- **Framework**: React 18.3.1 with TypeScript
+- **Build Tool**: Vite 5.4.19
+- **Styling**: Tailwind CSS 3.4.17 with custom design system
+- **UI Components**: Radix UI primitives with shadcn/ui
+- **State Management**: React hooks with TanStack Query
+- **Routing**: React Router DOM 6.30.1
+- **Icons**: Lucide React
+- **Charts**: Recharts 2.15.4
 
-## What technologies are used for this project?
+## 📱 Mobile & Deployment
 
-This project is built with:
+### Progressive Web App (Ready Now!)
+- Install directly from mobile browser
+- Offline functionality  
+- Native app-like experience
 
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
+### Native Apps with Capacitor
+```bash
+npm install @capacitor/core @capacitor/cli @capacitor/ios @capacitor/android
+npx cap init "Fit Map Voyage" "com.yourcompany.fitmapvoyage"
+npm run build && npx cap add ios && npx cap add android
+```
 
-## How can I deploy this project?
+### Deployment Options
+- **Static Hosting**: Netlify, Vercel, GitHub Pages
+- **Traditional Servers**: Apache, Nginx with SPA routing
+- **App Stores**: iOS App Store, Google Play Store
 
-Simply open [Lovable](https://lovable.dev/projects/889571e4-c819-4840-983b-a1f725ba0e5c) and click on Share -> Publish.
+See `DEPLOYMENT.md` for detailed deployment instructions.
 
-## Can I connect a custom domain to my Lovable project?
+## 📄 License & Ownership
 
-Yes, you can!
+This project is licensed under the MIT License. As the app owner, you have:
+- ✅ Full commercial rights
+- ✅ App Store deployment rights  
+- ✅ Modification and rebranding rights
+- ✅ No attribution requirements
 
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
+## 🆘 Support
 
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/tips-tricks/custom-domain#step-by-step-guide)
+- Check `EXPORT_README.md` for complete export details
+- Run `npm run smoke` to verify functionality
+- See browser console for error messages
+
+**Built with ❤️ using modern web technologies**
