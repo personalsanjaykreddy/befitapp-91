@@ -49,18 +49,12 @@ const AppHeader = ({ userName, onOpenProfile }: AppHeaderProps) => {
             <span className="text-xs text-primary font-medium animate-fade-in">
               {motivationalWish}
             </span>
-            <span className="text-xs text-muted-foreground">
-              {wellnessQuote}
-            </span>
           </div>
         </div>
 
         {/* StartFit Logo - Center */}
         <div className="flex-1 flex justify-center">
-          <div className="flex items-center gap-2 hover:scale-110 hover:shadow-glow transition-all duration-normal cursor-pointer">
-            <div className="w-8 h-8 rounded-lg bg-gradient-primary flex items-center justify-center shadow-md">
-              <span className="text-sm font-bold text-primary-foreground">S</span>
-            </div>
+          <div className="hover:scale-110 hover:shadow-glow transition-all duration-normal cursor-pointer">
             <span className="text-lg font-bold bg-gradient-primary bg-clip-text text-transparent">
               StartFit
             </span>
