@@ -14,10 +14,10 @@ const HomeView = ({ onNavigateToEnergyCalc, onNavigateToNotes }: HomeViewProps) 
 
   return (
     <div className="flex-1 bg-gradient-hero overflow-hidden">
-      {/* Calories Circle - Main Focus */}
+      {/* Calories Circle - Smaller Size */}
       <div className="px-6 pb-4">
-        <div className="bg-gradient-card border border-border/50 rounded-2xl p-6 shadow-lg hover:shadow-glow hover:scale-[1.02] transition-all duration-slow cursor-pointer group">
-          <div className="text-center mb-4">
+        <div className="bg-gradient-card border border-border/50 rounded-2xl p-4 shadow-lg hover:shadow-glow hover:scale-[1.02] transition-all duration-slow cursor-pointer group">
+          <div className="text-center mb-3">
             <div className="flex items-center justify-center gap-2 mb-1">
               <h3 className="text-lg font-semibold text-foreground group-hover:text-primary transition-colors">Calories</h3>
               <button 
@@ -30,35 +30,35 @@ const HomeView = ({ onNavigateToEnergyCalc, onNavigateToNotes }: HomeViewProps) 
             <p className="text-xs text-muted-foreground">Remaining = Goal - Food + Exercise</p>
           </div>
           
-          <div className="flex items-center justify-center mb-6">
-            {/* Large Circular Progress */}
-            <div className="relative w-40 h-40">
-              <svg className="w-40 h-40 transform -rotate-90" viewBox="0 0 144 144">
+          <div className="flex items-center justify-center mb-4">
+            {/* Smaller Circular Progress */}
+            <div className="relative w-28 h-28">
+              <svg className="w-28 h-28 transform -rotate-90" viewBox="0 0 112 112">
                 <circle
-                  cx="72"
-                  cy="72"
-                  r="60"
+                  cx="56"
+                  cy="56"
+                  r="48"
                   stroke="hsl(var(--border))"
-                  strokeWidth="8"
+                  strokeWidth="6"
                   fill="transparent"
                 />
                 <circle
-                  cx="72"
-                  cy="72"
-                  r="60"
+                  cx="56"
+                  cy="56"
+                  r="48"
                   stroke="hsl(var(--primary))"
-                  strokeWidth="8"
+                  strokeWidth="6"
                   fill="transparent"
-                  strokeDasharray={`${2 * Math.PI * 60}`}
-                  strokeDashoffset={`${2 * Math.PI * 60 * (1 - 0.72)}`}
+                  strokeDasharray={`${2 * Math.PI * 48}`}
+                  strokeDashoffset={`${2 * Math.PI * 48 * (1 - 0.72)}`}
                   className="transition-all duration-1000 ease-out"
                   strokeLinecap="round"
                 />
               </svg>
               <div className="absolute inset-0 flex items-center justify-center">
                 <div className="text-center">
-                  <div className="text-3xl font-bold text-foreground">1,840</div>
-                  <div className="text-sm text-muted-foreground">Remaining</div>
+                  <div className="text-2xl font-bold text-foreground">1,840</div>
+                  <div className="text-xs text-muted-foreground">Remaining</div>
                 </div>
               </div>
             </div>
@@ -67,17 +67,17 @@ const HomeView = ({ onNavigateToEnergyCalc, onNavigateToNotes }: HomeViewProps) 
           {/* Stats Row */}
           <div className="grid grid-cols-3 gap-4 text-center">
             <div className="flex flex-col items-center gap-1">
-              <Target className="w-5 h-5 text-primary" />
+              <Target className="w-4 h-4 text-primary" />
               <div className="text-sm font-medium text-foreground">2,400</div>
               <div className="text-xs text-muted-foreground">Base Goal</div>
             </div>
             <div className="flex flex-col items-center gap-1">
-              <Flame className="w-5 h-5 text-orange-500" />
+              <Flame className="w-4 h-4 text-orange-500" />
               <div className="text-sm font-medium text-foreground">560</div>
               <div className="text-xs text-muted-foreground">Food</div>
             </div>
             <div className="flex flex-col items-center gap-1">
-              <Zap className="w-5 h-5 text-green-500" />
+              <Zap className="w-4 h-4 text-green-500" />
               <div className="text-sm font-medium text-foreground">0</div>
               <div className="text-xs text-muted-foreground">Exercise</div>
             </div>

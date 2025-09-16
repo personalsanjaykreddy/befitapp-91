@@ -148,4 +148,14 @@
   body {
     @apply bg-background text-foreground;
   }
+
+  /* Hide all scrollbars for clean UI */
+  * {
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none; /* Internet Explorer 10+ */
+  }
+  
+  *::-webkit-scrollbar {
+    display: none; /* WebKit */
+  }
 }

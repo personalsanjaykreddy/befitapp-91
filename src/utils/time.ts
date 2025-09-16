@@ -12,9 +12,35 @@ const greetingLines = [
   "Ready to inspire"
 ];
 
+const motivationalWishes = [
+  "Wishing you strength today",
+  "May your energy flow freely",
+  "Hope you feel unstoppable",
+  "Sending you positive vibes",
+  "May today bring you joy"
+];
+
+const wellnessQuotes = [
+  "Your body can do it. It's your mind you need to convince.",
+  "Progress, not perfection, is the goal.",
+  "Every workout is a step toward a stronger you.",
+  "Listen to your body, but don't let it make excuses.",
+  "Wellness is a journey, not a destination."
+];
+
 export function getChangingGreetingLine(): string {
   const dayOfYear = Math.floor((Date.now() - new Date(new Date().getFullYear(), 0, 0).getTime()) / (1000 * 60 * 60 * 24));
   return greetingLines[dayOfYear % greetingLines.length];
+}
+
+export function getRandomMotivationalWish(): string {
+  const randomIndex = Math.floor(Math.random() * motivationalWishes.length);
+  return motivationalWishes[randomIndex];
+}
+
+export function getRandomWellnessQuote(): string {
+  const randomIndex = Math.floor(Math.random() * wellnessQuotes.length);
+  return wellnessQuotes[randomIndex];
 }
 
 export function getTimeBasedGreeting(): string {

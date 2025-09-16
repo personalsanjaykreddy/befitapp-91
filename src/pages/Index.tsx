@@ -238,7 +238,7 @@ const Index = () => {
   }
 
   return (
-    <div className="flex flex-col h-screen bg-gradient-hero">
+    <div className="flex flex-col h-screen bg-gradient-hero overflow-hidden">
       {/* Optional Profile Setup Modal */}
       {showProfileSetup && (
         <UserProfileSetup 
@@ -254,7 +254,7 @@ const Index = () => {
       />
       
       {/* Main Content Area - Scrollable */}
-      <div className="flex-1 overflow-y-auto">
+      <div className="flex-1 overflow-y-auto overflow-x-hidden">
         <div className="flex flex-col min-h-full">
           {/* Home View - Primary Canvas */}
           <div className="flex-shrink-0">
