@@ -62,3 +62,29 @@ export function getMotivationalMessage(): string {
     return "ready to plan tomorrow?";
   }
 }
+
+const motivationalWishes = [
+  "Make today amazing",
+  "Time to shine bright",
+  "Ready to conquer the day",
+  "Let's make it count",
+  "Your best self awaits"
+];
+
+const wellnessQuotes = [
+  "Progress, not perfection",
+  "Every step counts",
+  "Stronger than yesterday",
+  "Health is wealth",
+  "Mind, body, soul in harmony"
+];
+
+export function getRandomMotivationalWish(): string {
+  const randomIndex = Math.floor(Math.random() * motivationalWishes.length);
+  return motivationalWishes[randomIndex];
+}
+
+export function getRandomWellnessQuote(): string {
+  const randomIndex = Math.floor(Math.random() * wellnessQuotes.length);
+  return wellnessQuotes[randomIndex];
+}
