@@ -2,33 +2,19 @@
  * Time-based utilities for the fitness app
  */
 
-const motivationalWishes = [
+const greetingLines = [
   "Make today amazing",
   "Time to shine bright", 
   "Ready to conquer",
   "Let's make it count",
-  "Your best self awaits"
+  "Your best self awaits",
+  "Time to level up",
+  "Ready to inspire"
 ];
-
-const wellnessQuotes = [
-  "Every step counts towards your goal",
-  "Progress, not perfection",
-  "Your body can do it, trust your mind",
-  "Small changes lead to big results",
-  "Consistency is your superpower"
-];
-
-export function getRandomMotivationalWish(): string {
-  return motivationalWishes[Math.floor(Math.random() * motivationalWishes.length)];
-}
-
-export function getRandomWellnessQuote(): string {
-  return wellnessQuotes[Math.floor(Math.random() * wellnessQuotes.length)];
-}
 
 export function getChangingGreetingLine(): string {
   const dayOfYear = Math.floor((Date.now() - new Date(new Date().getFullYear(), 0, 0).getTime()) / (1000 * 60 * 60 * 24));
-  return motivationalWishes[dayOfYear % motivationalWishes.length];
+  return greetingLines[dayOfYear % greetingLines.length];
 }
 
 export function getTimeBasedGreeting(): string {
