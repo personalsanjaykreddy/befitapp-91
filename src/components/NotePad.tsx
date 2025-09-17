@@ -34,6 +34,21 @@ const NotePad = ({ onBack }: NotePadProps) => {
       }));
       setNotes(parsedNotes);
     }
+
+    // Load saved meals from meal planner
+    const savedMeals = localStorage.getItem('savedMeals');
+    if (savedMeals) {
+      const meals = JSON.parse(savedMeals);
+      const mealNotes = meals.map((meal: any) => ({
+        id: `meal-${meal.id}`,
+        title: `Meal: ${meal.name}`,
+        content: `Calories: ${meal.calories}, Protein: ${meal.protein}g, Carbs: ${meal.carbs}g`,
+        completed: false,
+        createdAt: new Date(),
+        type: 'note'
+      }));
+      setNotes(prev => [...prev, ...mealNotes]);
+    }
   }, []);
 
   const saveNotes = (updatedNotes: Note[]) => {

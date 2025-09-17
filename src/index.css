@@ -159,24 +159,51 @@
     display: none; /* WebKit */
   }
 
-  /* Interactive hover highlight animation */
-  .hover-highlight {
+  /* Interactive hover/touch highlight animation with reduced brightness */
+  .hover-highlight,
+  .touch-highlight {
     position: relative;
     transition: all var(--transition-normal);
   }
 
-  .hover-highlight:hover::before {
+  .hover-highlight:hover::before,
+  .touch-highlight:active::before {
     content: '';
     position: absolute;
     inset: -2px;
-    background: linear-gradient(135deg, hsl(215 85% 55% / 0.1), hsl(25 85% 58% / 0.1));
+    background: linear-gradient(135deg, hsl(215 85% 55% / 0.05), hsl(25 85% 58% / 0.05));
     border-radius: calc(var(--radius) + 2px);
     z-index: -1;
     animation: highlight-cursor 1s ease-out;
+    animation-fill-mode: forwards;
   }
 
-  .hover-highlight:hover {
+  .hover-highlight:hover,
+  .touch-highlight:active {
     transform: scale(1.02);
-    box-shadow: var(--shadow-glow);
+    box-shadow: var(--shadow-md);
+  }
+
+  /* Keep highlight for 1 second after hover/touch ends */
+  .hover-highlight.highlight-persist::before,
+  .touch-highlight.highlight-persist::before {
+    content: '';
+    position: absolute;
+    inset: -2px;
+    background: linear-gradient(135deg, hsl(215 85% 55% / 0.05), hsl(25 85% 58% / 0.05));
+    border-radius: calc(var(--radius) + 2px);
+    z-index: -1;
+    animation: highlight-fade-out 1s ease-out forwards;
+  }
+
+  @keyframes highlight-fade-out {
+    0% { 
+      opacity: 1;
+      transform: scale(1.02);
+    }
+    100% { 
+      opacity: 0;
+      transform: scale(1);
+    }
   }
 }

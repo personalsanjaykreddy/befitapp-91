@@ -17,46 +17,61 @@ interface DailyGoal {
 
 const HomeView = ({ onNavigateToEnergyCalc, onNavigateToNotes }: HomeViewProps) => {
   const [showWorkoutPopup, setShowWorkoutPopup] = useState(false);
-  const [steps, setSteps] = useState(8432);
-  const [moveMinutes, setMoveMinutes] = useState(25);
-  const [dailyGoals, setDailyGoals] = useState<DailyGoal[]>([
-    { id: '1', text: 'Drink 8 glasses of water', completed: false },
-    { id: '2', text: 'Walk 10,000 steps', completed: false },
-    { id: '3', text: 'Exercise for 30 minutes', completed: false },
-    { id: '4', text: 'Eat 5 servings of fruits/vegetables', completed: false },
-    { id: '5', text: 'Sleep 8 hours', completed: false },
-    { id: '6', text: 'Take vitamins', completed: false },
-    { id: '7', text: 'Meditate for 10 minutes', completed: false },
-  ]);
+  const [steps, setSteps] = useState(() => {
+    const saved = localStorage.getItem('dailySteps');
+    return saved ? parseInt(saved) : 2847;
+  });
+  const [moveMinutes, setMoveMinutes] = useState(() => {
+    const saved = localStorage.getItem('dailyMoveMinutes');
+    return saved ? parseInt(saved) : 12;
+  });
+  const [dailyGoals, setDailyGoals] = useState<DailyGoal[]>(() => {
+    const saved = localStorage.getItem('dailyGoals');
+    if (saved) {
+      return JSON.parse(saved);
+    }
+    return [
+      { id: '1', text: 'Drink 8 glasses of water', completed: false },
+      { id: '2', text: 'Walk 10,000 steps', completed: false },
+      { id: '3', text: 'Exercise for 30 minutes', completed: false }
+    ];
+  });
 
   const today = new Date();
   const dayName = today.toLocaleDateString('en-US', { weekday: 'long' });
   const dateString = today.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
-
-  // Load saved goals from localStorage
-  useEffect(() => {
-    const savedGoals = localStorage.getItem('dailyGoals');
-    if (savedGoals) {
-      setDailyGoals(JSON.parse(savedGoals));
-    }
-  }, []);
 
   // Save goals to localStorage whenever they change
   useEffect(() => {
     localStorage.setItem('dailyGoals', JSON.stringify(dailyGoals));
   }, [dailyGoals]);
 
-  // Simulate real step counting (not rapid movement)
+  // Realistic step counting (not rapid movement)
   useEffect(() => {
     const stepInterval = setInterval(() => {
-      const increment = Math.random() < 0.3 ? Math.floor(Math.random() * 5) + 1 : 0;
-      setSteps(prev => Math.min(prev + increment, 15000));
-    }, 30000); // Update every 30 seconds
+      const hour = new Date().getHours();
+      // Only increment during active hours and not too rapidly
+      if (hour >= 6 && hour <= 22 && Math.random() < 0.1) {
+        const increment = Math.floor(Math.random() * 3) + 1;
+        setSteps(prev => {
+          const newSteps = Math.min(prev + increment, 15000);
+          localStorage.setItem('dailySteps', newSteps.toString());
+          return newSteps;
+        });
+      }
+    }, 60000); // Update every minute
 
     const moveInterval = setInterval(() => {
-      const increment = Math.random() < 0.2 ? 1 : 0;
-      setMoveMinutes(prev => Math.min(prev + increment, 60));
-    }, 60000); // Update every minute
+      const hour = new Date().getHours();
+      // Only increment during active hours
+      if (hour >= 6 && hour <= 22 && Math.random() < 0.05) {
+        setMoveMinutes(prev => {
+          const newMinutes = Math.min(prev + 1, 60);
+          localStorage.setItem('dailyMoveMinutes', newMinutes.toString());
+          return newMinutes;
+        });
+      }
+    }, 120000); // Update every 2 minutes
 
     return () => {
       clearInterval(stepInterval);
@@ -75,12 +90,13 @@ const HomeView = ({ onNavigateToEnergyCalc, onNavigateToNotes }: HomeViewProps) 
   };
 
   const completedGoalsCount = dailyGoals.filter(goal => goal.completed).length;
+  const weeklyProgress = Math.min(100, (completedGoalsCount / dailyGoals.length) * 100);
 
   return (
     <div className="flex-1 bg-gradient-hero overflow-hidden">
-      {/* Calories Circle - Smaller Size */}
+      {/* Calories Circle - Smaller Size with Better Alignment */}
       <div className="px-6 pb-4">
-        <div className="bg-gradient-card border border-border/50 rounded-2xl p-4 shadow-lg hover:shadow-glow hover:scale-[1.02] transition-all duration-slow cursor-pointer group hover-highlight">
+        <div className="bg-gradient-card border border-border/50 rounded-2xl p-4 shadow-lg hover:shadow-glow hover:scale-[1.02] transition-all duration-slow cursor-pointer group hover-highlight touch-highlight">
           <div className="text-center mb-3">
             <div className="flex items-center justify-center gap-2 mb-1">
               <h3 className="text-lg font-semibold text-foreground group-hover:text-primary transition-colors">Calories</h3>
@@ -95,34 +111,34 @@ const HomeView = ({ onNavigateToEnergyCalc, onNavigateToNotes }: HomeViewProps) 
           </div>
           
           <div className="flex items-center justify-center mb-4">
-            {/* Smaller Circular Progress */}
+            {/* Smaller Circular Progress with Better Text Alignment */}
             <div className="relative w-20 h-20">
-              <svg className="w-20 h-20 transform -rotate-90" viewBox="0 0 80 80">
+              <svg className="w-20 h-20 transform -rotate-90" viewBox="0 0 28 28">
                 <circle
-                  cx="40"
-                  cy="40"
-                  r="32"
+                  cx="14"
+                  cy="14"
+                  r="11"
                   stroke="hsl(var(--border))"
-                  strokeWidth="4"
+                  strokeWidth="1.5"
                   fill="transparent"
                 />
                 <circle
-                  cx="40"
-                  cy="40"
-                  r="32"
+                  cx="14"
+                  cy="14"
+                  r="11"
                   stroke="hsl(var(--primary))"
-                  strokeWidth="4"
+                  strokeWidth="1.5"
                   fill="transparent"
-                  strokeDasharray={`${2 * Math.PI * 32}`}
-                  strokeDashoffset={`${2 * Math.PI * 32 * (1 - 0.72)}`}
+                  strokeDasharray={`${2 * Math.PI * 11}`}
+                  strokeDashoffset={`${2 * Math.PI * 11 * (1 - 0.72)}`}
                   className="transition-all duration-1000 ease-out"
                   strokeLinecap="round"
                 />
               </svg>
               <div className="absolute inset-0 flex items-center justify-center">
                 <div className="text-center">
-                  <div className="text-lg font-bold text-foreground">1,840</div>
-                  <div className="text-xs text-muted-foreground">Remaining</div>
+                  <div className="text-base font-bold text-foreground leading-tight">1,840</div>
+                  <div className="text-[10px] text-muted-foreground leading-tight">Remaining</div>
                 </div>
               </div>
             </div>
@@ -152,7 +168,7 @@ const HomeView = ({ onNavigateToEnergyCalc, onNavigateToNotes }: HomeViewProps) 
       {/* Activity Rings */}
       <div className="px-6 pb-4">
         <div className="grid grid-cols-2 gap-3">
-          <div className="bg-gradient-card border border-border/50 rounded-xl p-4 hover:shadow-md hover:scale-[1.02] transition-all duration-normal cursor-pointer hover-highlight">
+          <div className="bg-gradient-card border border-border/50 rounded-xl p-4 hover:shadow-md hover:scale-[1.02] transition-all duration-normal cursor-pointer hover-highlight touch-highlight">
             <div className="flex items-center gap-3">
               <div className="relative w-12 h-12">
                 <svg className="w-12 h-12 transform -rotate-90" viewBox="0 0 48 48">
@@ -170,7 +186,7 @@ const HomeView = ({ onNavigateToEnergyCalc, onNavigateToNotes }: HomeViewProps) 
             </div>
           </div>
 
-          <div className="bg-gradient-card border border-border/50 rounded-xl p-4 hover:shadow-md hover:scale-[1.02] transition-all duration-normal cursor-pointer hover-highlight">
+          <div className="bg-gradient-card border border-border/50 rounded-xl p-4 hover:shadow-md hover:scale-[1.02] transition-all duration-normal cursor-pointer hover-highlight touch-highlight">
             <div className="flex items-center gap-3">
               <div className="relative w-12 h-12">
                 <svg className="w-12 h-12 transform -rotate-90" viewBox="0 0 48 48">
@@ -190,12 +206,12 @@ const HomeView = ({ onNavigateToEnergyCalc, onNavigateToNotes }: HomeViewProps) 
         </div>
       </div>
 
-      {/* Daily Goals with Update Feature */}
+      {/* Daily Goals with Functional Updates */}
       <div className="px-6 pb-4">
-        <div className="bg-gradient-card border border-border/50 rounded-xl p-4 hover:shadow-selected hover:scale-[1.02] transition-all duration-slow cursor-pointer group hover-highlight">
+        <div className="bg-gradient-card border border-border/50 rounded-xl p-4 hover:shadow-selected hover:scale-[1.02] transition-all duration-slow cursor-pointer group hover-highlight touch-highlight">
           <div className="flex items-center justify-between mb-3">
             <div className="flex items-center gap-2">
-              <h3 className="font-semibold text-foreground group-hover:text-primary transition-colors">Daily Goals</h3>
+              <h3 className="font-semibold text-foreground group-hover:text-primary transition-colors">Today's Goals</h3>
               <Button 
                 size="sm" 
                 variant="ghost" 
@@ -214,7 +230,7 @@ const HomeView = ({ onNavigateToEnergyCalc, onNavigateToNotes }: HomeViewProps) 
           </div>
           
           <div className="space-y-2 mb-4">
-            {dailyGoals.slice(0, 3).map((goal) => (
+            {dailyGoals.map((goal) => (
               <div key={goal.id} className="flex items-center gap-3">
                 <button
                   onClick={() => toggleGoal(goal.id)}
@@ -233,21 +249,33 @@ const HomeView = ({ onNavigateToEnergyCalc, onNavigateToNotes }: HomeViewProps) 
             ))}
           </div>
           
+          {/* Weekly Progress Based on Daily Goals */}
+          <div className="mb-3">
+            <div className="flex justify-between text-sm mb-1">
+              <span className="text-muted-foreground">Weekly Progress</span>
+              <span className="text-primary font-medium">{Math.round(weeklyProgress)}%</span>
+            </div>
+            <Progress value={weeklyProgress} className="h-2" />
+          </div>
+          
           <div className="flex justify-between">
-            {['S', 'S', 'M', 'T', 'W', 'T', 'F'].map((day, index) => (
-              <div key={day} className="flex flex-col items-center gap-1">
-                <div className={`w-8 h-8 rounded-full border-2 flex items-center justify-center text-xs font-medium
-                  ${index < completedGoalsCount ? 'border-primary bg-primary text-primary-foreground' : 'border-border text-muted-foreground'}`}>
-                  {index < completedGoalsCount ? '✓' : ''}
+            {['S', 'S', 'M', 'T', 'W', 'T', 'F'].map((day, index) => {
+              const isCompleted = index < Math.floor(weeklyProgress / 20); // Based on actual progress
+              return (
+                <div key={day} className="flex flex-col items-center gap-1">
+                  <div className={`w-8 h-8 rounded-full border-2 flex items-center justify-center text-xs font-medium
+                    ${isCompleted ? 'border-primary bg-primary text-primary-foreground' : 'border-border text-muted-foreground'}`}>
+                    {isCompleted ? '✓' : ''}
+                  </div>
+                  <span className="text-xs text-muted-foreground">{day}</span>
                 </div>
-                <span className="text-xs text-muted-foreground">{day}</span>
-              </div>
-            ))}
+              );
+            })}
           </div>
         </div>
       </div>
 
-      {/* Special Features */}
+      {/* Special Features - Same Color Style */}
       <div className="px-6 pb-6">
         <div className="grid grid-cols-2 gap-3">
           <Button 
@@ -260,8 +288,7 @@ const HomeView = ({ onNavigateToEnergyCalc, onNavigateToNotes }: HomeViewProps) 
           </Button>
           <Button
             size="lg"
-            variant="outline"
-            className="h-14 border-primary/20 hover:bg-primary/5 hover:scale-110 active:scale-95 transition-all duration-slow"
+            className="bg-gradient-primary text-primary-foreground h-14 shadow-selected hover:shadow-glow transition-all duration-slow hover:scale-110 active:scale-95"
             onClick={() => setShowWorkoutPopup(true)}
           >
             <Activity className="w-5 h-5 mr-2" />

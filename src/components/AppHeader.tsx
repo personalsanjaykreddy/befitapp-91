@@ -1,5 +1,5 @@
 import { Search, User } from "lucide-react";
-import { getTimeBasedGreeting, getMotivationalMessage, getRandomMotivationalWish, getRandomWellnessQuote, getDisplayName, checkAndAskForNickname } from "@/utils/time";
+import { getTimeBasedGreeting, getRandomMotivationalWish, getDisplayName, checkAndAskForNickname } from "@/utils/time";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -12,7 +12,6 @@ interface AppHeaderProps {
 const AppHeader = ({ userName, onOpenProfile }: AppHeaderProps) => {
   const greeting = getTimeBasedGreeting();
   const motivationalWish = getRandomMotivationalWish();
-  const wellnessQuote = getRandomWellnessQuote();
   const displayName = userName ? getDisplayName(userName) : undefined;
   
   // Check if name is too long and ask for nickname
@@ -26,7 +25,7 @@ const AppHeader = ({ userName, onOpenProfile }: AppHeaderProps) => {
     <header className="sticky top-0 z-50 bg-background/95 backdrop-blur-md border-b border-border/50 px-4 py-3 shadow-sm">
       <div className="flex items-center justify-between gap-4">
         {/* Profile - Left Side */}
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-3 flex-1">
           <Button
             variant="ghost"
             size="icon"
@@ -41,19 +40,19 @@ const AppHeader = ({ userName, onOpenProfile }: AppHeaderProps) => {
             </Avatar>
           </Button>
           
-          {/* Greeting and Motivational Content */}
-          <div className="flex flex-col">
-            <span className="text-sm font-medium text-foreground">
+          {/* Greeting and Motivational Content - Single Line for Mobile */}
+          <div className="flex flex-col min-w-0 flex-1">
+            <span className="text-sm font-medium text-foreground truncate">
               {greeting}{displayName ? `, ${displayName}` : ''}!
             </span>
-            <span className="text-xs text-primary font-medium animate-fade-in">
+            <span className="text-xs text-primary font-medium animate-fade-in truncate">
               {motivationalWish}
             </span>
           </div>
         </div>
 
         {/* StartFit Logo - Center */}
-        <div className="flex-1 flex justify-center">
+        <div className="flex-shrink-0">
           <div className="hover:scale-110 hover:shadow-glow transition-all duration-normal cursor-pointer">
             <span className="text-lg font-bold bg-gradient-primary bg-clip-text text-transparent">
               StartFit
@@ -62,7 +61,7 @@ const AppHeader = ({ userName, onOpenProfile }: AppHeaderProps) => {
         </div>
 
         {/* Search - Right Side */}
-        <div className="relative w-32 sm:w-48">
+        <div className="relative w-24 sm:w-32 md:w-48 flex-shrink-0">
           <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
           <Input
             placeholder="Search..."

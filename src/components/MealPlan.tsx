@@ -10,10 +10,34 @@ interface MealPlanProps {
 }
 
 const MealPlan = ({ onBack }: MealPlanProps) => {
-  const [step, setStep] = useState<1 | 2 | 3 | 4>(1);
+  const [step, setStep] = useState<1 | 2 | 3 | 4>(() => {
+    const saved = localStorage.getItem('mealPlanStep');
+    return saved ? parseInt(saved) as 1 | 2 | 3 | 4 : 1;
+  });
   const [mealType, setMealType] = useState<"pre-workout" | "post-workout" | "regular" | null>(null);
   const [availableIngredients, setAvailableIngredients] = useState<string[]>([]);
   const [timeOfDay, setTimeOfDay] = useState<"morning" | "afternoon" | "evening" | null>(null);
+  const [savedMeals, setSavedMeals] = useState<any[]>(() => {
+    const saved = localStorage.getItem('savedMeals');
+    return saved ? JSON.parse(saved) : [];
+  });
+
+  // Save state to localStorage
+  useEffect(() => {
+    localStorage.setItem('mealPlanStep', step.toString());
+  }, [step]);
+
+  useEffect(() => {
+    localStorage.setItem('savedMeals', JSON.stringify(savedMeals));
+  }, [savedMeals]);
+
+  const saveMeal = (meal: any) => {
+    setSavedMeals(prev => [...prev, { ...meal, id: Date.now() }]);
+  };
+
+  const deleteMeal = (mealId: number) => {
+    setSavedMeals(prev => prev.filter(meal => meal.id !== mealId));
+  };
 
   const ingredients = [
     "Rice", "Roti/Chapati", "Dal (Lentils)", "Chicken", "Paneer", "Eggs", 
@@ -355,6 +379,24 @@ const MealPlan = ({ onBack }: MealPlanProps) => {
                       <p className="text-lg font-bold text-success">{meal.carbs}g</p>
                       <p className="text-xs text-muted-foreground">Carbs</p>
                     </div>
+                  </div>
+
+                  <div className="flex gap-2">
+                    <Button
+                      size="sm"
+                      onClick={() => saveMeal(meal)}
+                      className="flex-1"
+                    >
+                      Save to Notes
+                    </Button>
+                    <Button
+                      size="sm"
+                      variant="outline"
+                      onClick={() => deleteMeal(index)}
+                      className="text-destructive hover:bg-destructive hover:text-destructive-foreground"
+                    >
+                      Delete
+                    </Button>
                   </div>
                 </div>
               </Card>

@@ -1,5 +1,5 @@
-import { useState } from "react";
-import { ArrowLeft, Clock, MapPin, Dumbbell, Heart, Zap, Target, CheckCircle } from "lucide-react";
+import { useState, useEffect } from "react";
+import { ArrowLeft, Clock, MapPin, Dumbbell, Heart, Zap, Target, CheckCircle, Flower2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -32,6 +32,13 @@ interface Exercise {
 }
 
 const workoutTypes: WorkoutType[] = [
+  {
+    id: "yoga",
+    name: "Yoga",
+    description: "Flexibility, balance, and mindfulness",
+    icon: Flower2,
+    gradient: "bg-gradient-to-br from-purple-500 to-purple-600"
+  },
   {
     id: "strength",
     name: "Strength Training",
@@ -66,14 +73,71 @@ const durations = [15, 30, 45, 60, 90];
 const locations = ["Home", "Gym", "Outdoor", "Hotel/Travel"];
 
 const WorkoutPlan = ({ onBack }: WorkoutPlanProps) => {
-  const [step, setStep] = useState(1);
-  const [selectedType, setSelectedType] = useState<string>("");
-  const [selectedDuration, setSelectedDuration] = useState<number>(0);
-  const [selectedLocation, setSelectedLocation] = useState<string>("");
-  const [generatedPlan, setGeneratedPlan] = useState<Exercise[]>([]);
+  const [step, setStep] = useState(() => {
+    const saved = localStorage.getItem('workoutPlanStep');
+    return saved ? parseInt(saved) : 1;
+  });
+  const [selectedType, setSelectedType] = useState(() => {
+    return localStorage.getItem('workoutPlanType') || "";
+  });
+  const [selectedDuration, setSelectedDuration] = useState(() => {
+    const saved = localStorage.getItem('workoutPlanDuration');
+    return saved ? parseInt(saved) : 0;
+  });
+  const [selectedLocation, setSelectedLocation] = useState(() => {
+    return localStorage.getItem('workoutPlanLocation') || "";
+  });
+  const [generatedPlan, setGeneratedPlan] = useState<Exercise[]>(() => {
+    const saved = localStorage.getItem('workoutPlanGenerated');
+    return saved ? JSON.parse(saved) : [];
+  });
+
+  // Save state to localStorage
+  useEffect(() => {
+    localStorage.setItem('workoutPlanStep', step.toString());
+  }, [step]);
+
+  useEffect(() => {
+    localStorage.setItem('workoutPlanType', selectedType);
+  }, [selectedType]);
+
+  useEffect(() => {
+    localStorage.setItem('workoutPlanDuration', selectedDuration.toString());
+  }, [selectedDuration]);
+
+  useEffect(() => {
+    localStorage.setItem('workoutPlanLocation', selectedLocation);
+  }, [selectedLocation]);
+
+  useEffect(() => {
+    localStorage.setItem('workoutPlanGenerated', JSON.stringify(generatedPlan));
+  }, [generatedPlan]);
 
   const generateWorkoutPlan = (data: WorkoutPlanData): Exercise[] => {
     const plans = {
+      yoga: {
+        home: [
+          { name: "Sun Salutation A", sets: 3, reps: "5 rounds", rest: "30s" },
+          { name: "Warrior II Flow", sets: 2, reps: "Hold 30s each side", rest: "15s" },
+          { name: "Downward Dog", sets: 3, duration: "45s", rest: "15s" },
+          { name: "Tree Pose", sets: 2, reps: "30s each leg", rest: "10s" },
+          { name: "Savasana", sets: 1, duration: "5min", rest: "Complete" }
+        ],
+        gym: [
+          { name: "Vinyasa Flow", sets: 4, reps: "8 breaths", rest: "30s" },
+          { name: "Chair Pose Hold", sets: 3, duration: "45s", rest: "30s" },
+          { name: "Warrior III", sets: 2, reps: "30s each leg", rest: "20s" },
+          { name: "Crow Pose", sets: 3, reps: "Hold 15s", rest: "45s" },
+          { name: "Meditation", sets: 1, duration: "10min", rest: "Complete" }
+        ],
+        outdoor: [
+          { name: "Mountain Pose Breathing", sets: 3, duration: "60s", rest: "15s" },
+          { name: "Nature Flow Sequence", sets: 2, reps: "10 movements", rest: "30s" },
+          { name: "Tree Meditation", sets: 1, duration: "5min", rest: "30s" },
+          { name: "Sunset Stretches", sets: 3, reps: "Hold 45s", rest: "20s" },
+          { name: "Grounding Savasana", sets: 1, duration: "8min", rest: "Complete" }
+        ]
+      },
       strength: {
         home: [
           { name: "Push-ups", sets: 3, reps: "8-12", rest: "60s" },
@@ -184,6 +248,23 @@ const WorkoutPlan = ({ onBack }: WorkoutPlanProps) => {
     setStep(4);
   };
 
+  const deleteExercise = (index: number) => {
+    setGeneratedPlan(prev => prev.filter((_, i) => i !== index));
+  };
+
+  const addCustomExercise = () => {
+    const exerciseName = prompt("Enter exercise name:");
+    if (exerciseName) {
+      const newExercise: Exercise = {
+        name: exerciseName,
+        sets: 3,
+        reps: "10-12",
+        rest: "60s"
+      };
+      setGeneratedPlan(prev => [...prev, newExercise]);
+    }
+  };
+
   const renderStepContent = () => {
     switch (step) {
       case 1:
@@ -200,7 +281,7 @@ const WorkoutPlan = ({ onBack }: WorkoutPlanProps) => {
                   key={type.id}
                   onClick={() => setSelectedType(type.id)}
                   className={cn(
-                    "p-4 cursor-pointer transition-all duration-normal hover:scale-[1.02]",
+                    "p-4 cursor-pointer transition-all duration-normal hover:scale-[1.02] hover-highlight touch-highlight",
                     "border border-border/50 hover:border-primary/50",
                     selectedType === type.id && [
                       "border-primary/50 bg-gradient-selected scale-[1.02]",
@@ -248,7 +329,7 @@ const WorkoutPlan = ({ onBack }: WorkoutPlanProps) => {
                   key={duration}
                   onClick={() => setSelectedDuration(duration)}
                   className={cn(
-                    "p-4 cursor-pointer transition-all duration-normal hover:scale-[1.02]",
+                    "p-4 cursor-pointer transition-all duration-normal hover:scale-[1.02] hover-highlight touch-highlight",
                     "text-center border border-border/50 hover:border-secondary/50",
                     selectedDuration === duration && [
                       "border-secondary/50 bg-gradient-selected scale-[1.02]",
@@ -296,7 +377,7 @@ const WorkoutPlan = ({ onBack }: WorkoutPlanProps) => {
                   key={location}
                   onClick={() => setSelectedLocation(location)}
                   className={cn(
-                    "p-4 cursor-pointer transition-all duration-normal hover:scale-[1.02]",
+                    "p-4 cursor-pointer transition-all duration-normal hover:scale-[1.02] hover-highlight touch-highlight",
                     "text-center border border-border/50 hover:border-success/50",
                     selectedLocation === location && [
                       "border-success/50 bg-gradient-selected scale-[1.02]",
@@ -345,7 +426,7 @@ const WorkoutPlan = ({ onBack }: WorkoutPlanProps) => {
             
             <div className="space-y-3">
               {generatedPlan.map((exercise, index) => (
-                <Card key={index} className="p-4 bg-gradient-card border border-border/50">
+                <Card key={index} className="p-4 bg-gradient-card border border-border/50 hover-highlight touch-highlight">
                   <div className="flex items-center justify-between">
                     <div className="flex-1">
                       <h3 className="font-semibold text-foreground">{exercise.name}</h3>
@@ -356,12 +437,30 @@ const WorkoutPlan = ({ onBack }: WorkoutPlanProps) => {
                         {exercise.rest && <span>Rest: {exercise.rest}</span>}
                       </div>
                     </div>
-                    <div className="w-8 h-8 bg-primary/10 rounded-full flex items-center justify-center">
-                      <span className="text-sm font-bold text-primary">{index + 1}</span>
+                    <div className="flex items-center gap-2">
+                      <div className="w-8 h-8 bg-primary/10 rounded-full flex items-center justify-center">
+                        <span className="text-sm font-bold text-primary">{index + 1}</span>
+                      </div>
+                      <Button
+                        size="sm"
+                        variant="outline"
+                        onClick={() => deleteExercise(index)}
+                        className="text-destructive hover:bg-destructive hover:text-destructive-foreground"
+                      >
+                        ×
+                      </Button>
                     </div>
                   </div>
                 </Card>
               ))}
+              
+              <Button
+                onClick={addCustomExercise}
+                variant="outline"
+                className="w-full border-dashed hover:bg-primary/5"
+              >
+                + Add Custom Exercise
+              </Button>
             </div>
             
             <div className="flex gap-3">
