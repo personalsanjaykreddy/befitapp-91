@@ -118,7 +118,7 @@ const HabitTracker = ({ onBack }: HabitTrackerProps) => {
 
       <div className="px-6 pb-6 space-y-4">
         {/* Progress Overview */}
-        <Card className="p-4 bg-gradient-card border border-border/50 hover:shadow-glow hover:scale-[1.02] transition-all duration-slow cursor-pointer group">
+        <Card className="p-4 bg-gradient-card border border-border/50 hover:shadow-glow hover:scale-[1.02] transition-all duration-slow cursor-pointer group hover-highlight touch-highlight">
           <div className="flex items-center justify-between mb-3">
             <h3 className="font-semibold text-foreground group-hover:text-primary transition-colors">Today's Progress</h3>
             <Badge variant="default" className="hover:scale-105 transition-transform">
@@ -198,7 +198,7 @@ const HabitTracker = ({ onBack }: HabitTrackerProps) => {
         </Card>
 
         {/* Micro-Workouts */}
-        <Card className="p-4 bg-gradient-card border border-border/50 hover:shadow-selected hover:scale-[1.01] transition-all duration-slow cursor-pointer">
+        <Card className="p-4 bg-gradient-card border border-border/50 hover:shadow-selected hover:scale-[1.01] transition-all duration-slow cursor-pointer hover-highlight touch-highlight">
           <h3 className="font-semibold text-foreground mb-3">Quick Micro-Workouts</h3>
           <div className="grid gap-3">
             {microWorkouts.map((workout) => (

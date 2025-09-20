@@ -90,7 +90,7 @@ const FindFriendsCoaches = ({ onBack }: FindFriendsCoachesProps) => {
 
       <div className="px-6 pb-6 space-y-4">
         {/* Search Bar */}
-        <Card className="p-4 bg-gradient-card border border-border/50 hover:shadow-md hover:scale-[1.01] transition-all duration-normal cursor-pointer">
+        <Card className="p-4 bg-gradient-card border border-border/50 hover:shadow-md hover:scale-[1.01] transition-all duration-normal cursor-pointer hover-highlight touch-highlight">
           <div className="relative">
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
             <Input
@@ -128,7 +128,7 @@ const FindFriendsCoaches = ({ onBack }: FindFriendsCoachesProps) => {
 
         {/* Friends Tab */}
         {activeTab === "friends" && (
-          <Card className="p-4 bg-gradient-card border border-border/50 hover:shadow-glow hover:scale-[1.01] transition-all duration-slow cursor-pointer">
+          <Card className="p-4 bg-gradient-card border border-border/50 hover:shadow-glow hover:scale-[1.01] transition-all duration-slow cursor-pointer hover-highlight touch-highlight">
             <h3 className="font-semibold text-foreground mb-3">Nearby Fitness Friends</h3>
             <div className="space-y-3">
               {friends.map((friend) => (

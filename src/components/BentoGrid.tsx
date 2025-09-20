@@ -44,12 +44,12 @@ const BentoCard = ({
         onNavigate?.(id);
       }}
       className={cn(
-        "relative group cursor-pointer rounded-lg p-4 transition-all duration-slow",
+        "relative group cursor-pointer rounded-lg p-4 transition-all duration-slow hover-highlight touch-highlight",
         "bg-gradient-card border border-border/50 shadow-sm hover:shadow-glow",
-        "transform hover:scale-[1.05] active:scale-[0.95] hover:animate-highlight-cursor",
+        "transform hover:scale-[1.05] active:scale-[0.95]",
         isSelected && [
           "scale-[1.08] shadow-selected bg-gradient-selected",
-          "border-primary/30 animate-scale-selected animate-highlight-cursor"
+          "border-primary/30 animate-scale-selected"
         ]
       )}
     >

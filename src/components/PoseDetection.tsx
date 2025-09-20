@@ -95,7 +95,7 @@ const PoseDetection = ({ onBack }: PoseDetectionProps) => {
 
       <div className="px-6 pb-6 space-y-4">
         {/* Exercise Selection */}
-        <Card className="p-4 bg-gradient-card border border-border/50 hover:shadow-glow hover:scale-[1.02] transition-all duration-slow cursor-pointer group">
+        <Card className="p-4 bg-gradient-card border border-border/50 hover:shadow-glow hover:scale-[1.02] transition-all duration-slow cursor-pointer group hover-highlight touch-highlight">
           <h3 className="font-semibold text-foreground mb-3 group-hover:text-primary transition-colors">Select Exercise</h3>
           <div className="grid grid-cols-3 gap-2">
             {exercises.map((exercise) => (

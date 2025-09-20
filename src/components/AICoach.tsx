@@ -112,7 +112,7 @@ const AICoach = ({ onBack }: AICoachProps) => {
 
       <div className="px-6 pb-6 space-y-4">
         {/* Coach Status */}
-        <Card className="p-4 bg-gradient-card border border-border/50 hover:shadow-glow hover:scale-[1.02] transition-all duration-slow cursor-pointer group">
+        <Card className="p-4 bg-gradient-card border border-border/50 hover:shadow-glow hover:scale-[1.02] transition-all duration-slow cursor-pointer group hover-highlight touch-highlight">
           <div className="flex items-center gap-3">
             <div className="w-12 h-12 rounded-full bg-gradient-primary flex items-center justify-center group-hover:animate-bounce-gentle">
               <Bot className="w-6 h-6 text-primary-foreground" />
@@ -130,7 +130,7 @@ const AICoach = ({ onBack }: AICoachProps) => {
         </Card>
 
         {/* Quick Insights */}
-        <Card className="p-4 bg-gradient-card border border-border/50 hover:shadow-md hover:scale-[1.01] transition-all duration-normal cursor-pointer">
+        <Card className="p-4 bg-gradient-card border border-border/50 hover:shadow-md hover:scale-[1.01] transition-all duration-normal cursor-pointer hover-highlight touch-highlight">
           <h3 className="font-semibold text-foreground mb-3">Today's Insights</h3>
           <div className="space-y-2">
             {insights.map((insight, index) => {
@@ -160,7 +160,7 @@ const AICoach = ({ onBack }: AICoachProps) => {
         </Card>
 
         {/* Chat Messages */}
-        <Card className="p-4 bg-gradient-card border border-border/50 hover:shadow-selected transition-all duration-normal">
+        <Card className="p-4 bg-gradient-card border border-border/50 hover:shadow-selected transition-all duration-normal hover-highlight touch-highlight">
           <h3 className="font-semibold text-foreground mb-3">Recent Conversations</h3>
           <div className="space-y-3 max-h-64 overflow-y-auto">
             {messages.map((message) => {

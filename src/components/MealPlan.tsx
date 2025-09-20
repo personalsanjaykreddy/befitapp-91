@@ -366,7 +366,7 @@ const MealPlan = ({ onBack }: MealPlanProps) => {
                     ))}
                   </div>
 
-                  <div className="grid grid-cols-3 gap-4 p-3 bg-gradient-card rounded-lg border border-border/50">
+                  <div className="grid grid-cols-3 gap-4 p-3 bg-gradient-card rounded-lg border border-border/50 hover-highlight touch-highlight">
                     <div className="text-center">
                       <p className="text-lg font-bold text-primary">{meal.calories}</p>
                       <p className="text-xs text-muted-foreground">Calories</p>
