@@ -96,7 +96,7 @@ const HomeView = ({ onNavigateToEnergyCalc, onNavigateToNotes }: HomeViewProps) 
     <div className="flex-1 bg-gradient-hero overflow-hidden">
       {/* Calories Circle - Smaller Size with Better Alignment */}
       <div className="px-6 pb-4">
-        <div className="bg-gradient-card border border-border/50 rounded-2xl p-4 shadow-lg hover:shadow-glow hover:scale-[1.02] transition-all duration-slow cursor-pointer group hover-highlight touch-highlight">
+        <div className="bg-gradient-card border border-border/50 rounded-2xl p-4 shadow-lg hover:shadow-md transition-all duration-slow cursor-pointer group hover-highlight touch-highlight">
           <div className="text-center mb-3">
             <div className="flex items-center justify-center gap-2 mb-1">
               <h3 className="text-lg font-semibold text-foreground group-hover:text-primary transition-colors">Calories</h3>
@@ -168,7 +168,7 @@ const HomeView = ({ onNavigateToEnergyCalc, onNavigateToNotes }: HomeViewProps) 
       {/* Activity Rings */}
       <div className="px-6 pb-4">
         <div className="grid grid-cols-2 gap-3">
-          <div className="bg-gradient-card border border-border/50 rounded-xl p-4 hover:shadow-md hover:scale-[1.02] transition-all duration-normal cursor-pointer hover-highlight touch-highlight">
+          <div className="bg-gradient-card border border-border/50 rounded-xl p-4 hover:shadow-md transition-all duration-normal cursor-pointer hover-highlight touch-highlight">
             <div className="flex items-center gap-3">
               <div className="relative w-12 h-12">
                 <svg className="w-12 h-12 transform -rotate-90" viewBox="0 0 48 48">
@@ -186,7 +186,7 @@ const HomeView = ({ onNavigateToEnergyCalc, onNavigateToNotes }: HomeViewProps) 
             </div>
           </div>
 
-          <div className="bg-gradient-card border border-border/50 rounded-xl p-4 hover:shadow-md hover:scale-[1.02] transition-all duration-normal cursor-pointer hover-highlight touch-highlight">
+          <div className="bg-gradient-card border border-border/50 rounded-xl p-4 hover:shadow-md transition-all duration-normal cursor-pointer hover-highlight touch-highlight">
             <div className="flex items-center gap-3">
               <div className="relative w-12 h-12">
                 <svg className="w-12 h-12 transform -rotate-90" viewBox="0 0 48 48">
@@ -208,7 +208,7 @@ const HomeView = ({ onNavigateToEnergyCalc, onNavigateToNotes }: HomeViewProps) 
 
       {/* Daily Goals with Functional Updates */}
       <div className="px-6 pb-4">
-        <div className="bg-gradient-card border border-border/50 rounded-xl p-4 hover:shadow-selected hover:scale-[1.02] transition-all duration-slow cursor-pointer group hover-highlight touch-highlight">
+        <div className="bg-gradient-card border border-border/50 rounded-xl p-4 hover:shadow-selected transition-all duration-slow cursor-pointer group hover-highlight touch-highlight">
           <div className="flex items-center justify-between mb-3">
             <div className="flex items-center gap-2">
               <h3 className="font-semibold text-foreground group-hover:text-primary transition-colors">Today's Goals</h3>
