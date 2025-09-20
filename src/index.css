@@ -180,8 +180,7 @@
 
   .hover-highlight:hover,
   .touch-highlight:active {
-    transform: scale(1.02);
-    box-shadow: var(--shadow-md);
+    background: hsl(var(--primary) / 0.03);
   }
 
   /* Keep highlight for 1 second after hover/touch ends */
@@ -190,7 +189,7 @@
     content: '';
     position: absolute;
     inset: -2px;
-    background: linear-gradient(135deg, hsl(215 85% 55% / 0.02), hsl(25 85% 58% / 0.02));
+    background: hsl(var(--primary) / 0.01);
     border-radius: calc(var(--radius) + 2px);
     z-index: -1;
     animation: highlight-fade-out 1s ease-out forwards;
